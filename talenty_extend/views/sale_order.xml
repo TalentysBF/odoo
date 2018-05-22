@@ -191,6 +191,7 @@
                                     <field name="product_uom" groups="product.group_uom" class="oe_inline oe_no_button"
                                         attrs="{'readonly': [('state', 'in', ('sale','done', 'cancel'))]}"/>
                                 </div>
+                                <field name="f_currency" states="draft"/>
                                 <field name="layout_category_id" groups="sale.group_sale_layout"/>
                             </group>
                             <group attrs="{'invisible': [('state', '=', 'draft')]}">
@@ -214,11 +215,7 @@
                                     <field name="frais_approche" style="width: 50%"/>
                                     <field name="frais_approche_value" style="width: 50%"/>
                                 </div>
-                                <label for="marge" string="Marge (%)"/>
-                                <div>
-                                    <field name="marge" style="width: 50%"/>
-                                    <field name="marge_value" style="width: 50%"/>
-                                </div>
+                                <field name="marge" style="width: 50%" string="Marge (%)"/>
                             </group>
                             <group attrs="{'invisible': [('state', '=', 'draft')]}">
                                 <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
@@ -238,10 +235,11 @@
                                 <div name="discount" groups="sale.group_discount_per_so_line">
                                     <field name="discount" class="oe_inline"/> %%
                                 </div>
+                                <field name="marge_value" string="Marge"/>
                                 <field name="price_unit" string="Prix de vente HT"/>
                             </group>
                             <group>
-                                <field name="first_msg" widget="html"/>
+                                <field name="first_msg" widget="html" states="draft"/>
                             </group>
                             <group></group>
                         </group>

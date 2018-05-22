@@ -242,7 +242,7 @@
     <report
             id="account_invoices_custom"
             model="account.invoice"
-            string="Facture Custom"
+            string="Facture TALENTYS"
             report_type="qweb-pdf"
             name="talenty_extend.report_invoice_custom"
             file="talenty_extend.report_invoice_custom"

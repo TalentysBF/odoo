@@ -227,7 +227,7 @@
 
     <report
             id="action_report_custom_2_saleorder"
-            string="Devis Custom"
+            string="Devis TALENTYS"
             model="sale.order"
             report_type="qweb-pdf"
             file="talenty_extend.report_saleorder_bf"

@@ -67,13 +67,21 @@ class SaleOrderLine(models.Model):
     def onchange_devise(self):
         if self.devise == 'euro':
             self.prix_gpl_value = 656
-        elif self.devise == 'dolar':
+        elif self.devise == 'dollar':
             self.prix_gpl_value = 556
         elif self.devise == 'aed':
             self.prix_gpl_value = 147
 
+    @api.onchange('f_currency')
+    def onchange_f_currency(self):
+        self.devise = self.f_currency
+
+    f_currency = fields.Selection([('xof', 'XOF'), ('euro', 'EUR'), ('dollar', 'USD'), ('aed', 'AED')], 'Devise',
+                                   default='xof', required=True)
+
     prix_gpl_real = fields.Float(string='Prix Public en devise', required=False)
-    devise = fields.Selection([('euro', 'EUR'), ('dolar', 'USD'), ('aed', 'AED')])
+    devise = fields.Selection([('xof', 'XOF'), ('euro', 'EUR'), ('dollar', 'USD'), ('aed', 'AED')], default='xof',
+                              required=True)
     prix_gpl_value = fields.Float(string='Prix GPL Value', required=False, default=1)
 
     prix_gpl = fields.Integer(string='Prix Public (XOF)', required=False)
