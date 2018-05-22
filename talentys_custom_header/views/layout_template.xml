@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_custom" inherit_id="web.external_layout_standard">
+
+            <xpath expr="//div[hasclass('header')]" position="replace">
+                <div class="header">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <t t-if="company.header_logo">
+                                <img t-att-src="'data:image/png;base64,%s' % to_text(company.header_logo)" />
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row zero_min_height">
+                        <div class="col-xs-12">
+                            <div style="border-bottom: 1px solid black;"></div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+
+            <xpath expr="//div[hasclass('footer')]" position="replace">
+                <div class="footer">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <t t-if="company.footer_logo">
+                                <img t-att-src="'data:image/png;base64,%s' % to_text(company.footer_logo)" />
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row zero_min_height">
+                        <div class="col-xs-12">
+                            <div style="border-top: 1px solid black;"></div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+
+        </template>
+    </data>
+</odoo>

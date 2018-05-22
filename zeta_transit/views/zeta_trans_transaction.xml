@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="zeta_trans_transaction" model="ir.ui.view">
+		<field name="name">zeta_trans_transaction</field>
+        <field name="model">zeta.trans.transaction</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<div class="oe_button_box" name="button_box"></div>
+					<group>
+						<field name="name"/>
+                        <!--<field name="z_caisse"/>-->
+                        <field name="name_dossier"/>
+                        <field name="montant"/>
+                        <field name="date"/>
+                        <field name="type_transaction"/>
+					</group>
+				</sheet>
+			</form>
+		</field>
+
+	</record>
+
+	<record id="zeta_tree_trans_transaction" model="ir.ui.view">
+		<field name="name">Caisse Tree</field>
+		<field name="model">zeta.trans.transaction</field>
+		<field name="arch" type="xml">
+			<tree>
+                <field name="name"/>
+				<!--<field name="z_caisse"/>-->
+                <field name="name_dossier"/>
+				<field name="montant"/>
+                <field name="date"/>
+                <field name="type_transaction"/>
+			</tree>
+		</field>
+	</record>
+
+
+
+	<record model="ir.actions.act_window" id="zeta_transit_transaction_action_window">
+		<field name="name">Caisse Transactions</field>
+		<field name="res_model">zeta.trans.transaction</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+<!--
+
+	<record id="zeta_trans_dossier_zeta_view_buttons" model="ir.ui.view">
+            <field name="name">zeta.trans.dossier.view.buttons</field>
+            <field name="model">zeta.trans.dossier</field>
+            <field name="inherit_id" ref="zeta_trans_dossier" />
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="action" name="%(zeta_transit_minute_action_detail_window)d" icon="fa-clock-o">
+                        <field string="Minute" name="test" widget="statinfo"/>
+                    </button>
+                </div>
+            </field>
+	</record-->
+
+</odoo>

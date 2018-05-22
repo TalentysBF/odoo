@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="zeta_trans_avance" model="ir.ui.view">
+            <field name="name">zeta_trans_avance.list</field>
+            <field name="model">zeta.trans.avance</field>
+            <field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group name="DROIT">
+							<group>
+								<field name="str_minute"/>
+							</group>
+							<group></group>
+							<group>
+								<field name="d_d"/>
+								<field name="statistique"/>
+								<field name="p_c_s"/>
+							</group>
+							<group>
+								<field name="p_c"/>
+								<field name="c_p_v"/>
+								<field name="t_v_a_d"/>
+								<field name="peage"/>
+							</group>
+							<group>
+								<field name="t_d_d"/>
+							</group>
+						</group>
+						<group name="TAXES">
+							<group>
+								<field name="r_i"/>
+								<field name="a_i_b"/>
+							</group>
+							<group>
+								<field name="r_s_p"/>
+							</group>
+							<group>
+								<field name="t_d_t"/>
+								<field name="m_total_d"/>
+							</group>
+						</group>
+						<group name="DEBOURS">
+							<group>
+								<field name="t_s_ecor"/>
+								<field name="vaccation"/>
+								<field name="assurance"/>
+								<field name="p_m_d"/>
+								<field name="t_v_a_d_1"/>
+								<field name="camionage"/>
+								<field name="camionage_value"/>
+								<field name="rem_doc"/>
+							</group>
+							<group>
+								<field name="decl_douane"/>
+								<field name="decl_value"/>
+								<field name="f_f_n"/>
+								<field name="m_f_f"/>
+								<field name="stationement"/>
+								<field name="t_v_a_d_2"/>
+								<field name="douane_fg"/>
+								<field name="divers"/>
+								<field name="m_r_d"/>
+							</group>
+							<group>
+								<field name="total_debours"/>
+							</group>
+						</group>
+						<group name="INTERVENTIONS">
+							<group>
+								<field name="ouverture_d"/>
+								<field name="imprime"/>
+								<field name="honoraire"/>
+								<field name="divers"/>
+								<field name="total_ht"/>
+							</group>
+							<group>
+								<field name="avance"/>
+								<field name="transit"/>
+								<field name="debours"/>
+								<field name="t_v_a_d_3"/>
+							</group>
+							<group>
+								<field name="total_ttc"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+            </field>
+	</record>
+
+
+	<record id="zeta_tree_trans_avance" model="ir.ui.view">
+		<field name="name">Avance Tree</field>
+		<field name="model">zeta.trans.avance</field>
+		<field name="arch" type="xml">
+			<tree color="decoration-muted">
+				<field name="name"/>
+				<field name="str_minute"/>
+			</tree>
+		</field>
+	</record>
+	<record id="zeta_filter_trans_avance" model="ir.ui.view">
+		<field name="name">Avance Filter</field>
+		<field name="model">zeta.trans.avance</field>
+		<field name="arch" type="xml">
+			<search>
+				<field name="name"/>
+				<field name="str_minute"/>
+			</search>
+		</field>
+	</record>
+
+	<record model="ir.actions.act_window" id="zeta_transit_avance_action_window">
+		<field name="name">Avance</field>
+		<field name="res_model">zeta.trans.avance</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+</odoo>

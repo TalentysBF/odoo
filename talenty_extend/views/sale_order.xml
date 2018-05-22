@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="action_orders_to_invoice_boq" model="ir.actions.act_window">
+            <field name="name">BOQ</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
+            <field name="domain">[('state','=','draft')]</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        </record>
+
+        <record id="action_orders_to_invoice_validate" model="ir.actions.act_window">
+            <field name="name">Devis A Saisir</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
+            <field name="domain">[('state','=','validate')]</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        </record>
+
+        <record id="action_orders_to_invoice_auto" model="ir.actions.act_window">
+            <field name="name">Devis Saisie</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
+            <field name="domain">[('state','=','auto')]</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        </record>
+
+        <record id="action_orders_to_invoice_waiting" model="ir.actions.act_window">
+            <field name="name">Devis En Attente De Validation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
+            <field name="domain">[('state','=','waiting')]</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        </record>
+
+        <record id="action_orders_to_invoice_sent" model="ir.actions.act_window">
+            <field name="name">Devis Envoyés</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
+            <field name="domain">[('state','=','sent')]</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        </record>
+
+        <record id="action_orders_to_invoice_archive" model="ir.actions.act_window">
+            <field name="name">Devis Archivés</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
+            <field name="domain">[('state','=','archive')]</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        </record>
+
+        <record id="action_orders_to_invoice_rejected" model="ir.actions.act_window">
+            <field name="name">Devis Rejetés</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
+            <field name="domain">[('state','=','rejected')]</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        </record>
+
+         <menuitem id="menu_sale_order_boq"
+            name="BOQ"
+            action="action_orders_to_invoice_boq"
+            parent="sale.sale_order_menu"
+            sequence="1"/>
+
+         <menuitem id="menu_sale_order_validate"
+            name="Devis A Saisir"
+            action="action_orders_to_invoice_validate"
+            parent="sale.sale_order_menu"
+            sequence="1"/>
+
+         <menuitem id="menu_sale_order_auto"
+            name="Devis Saisie"
+            action="action_orders_to_invoice_auto"
+            parent="sale.sale_order_menu"
+            sequence="1"/>
+
+        <menuitem id="menu_sale_order_waiting"
+            name="Devis En Attente De Validation"
+            action="action_orders_to_invoice_waiting"
+            parent="sale.sale_order_menu"
+            sequence="1"/>
+
+        <menuitem id="menu_sale_order_sent"
+            name="Devis Envoyés"
+            action="action_orders_to_invoice_sent"
+            parent="sale.sale_order_menu"
+            sequence="1"/>
+
+        <menuitem id="menu_sale_order_archive"
+            name="Devis Archivés"
+            action="action_orders_to_invoice_archive"
+            parent="sale.sale_order_menu"
+            sequence="1"/>
+
+        <menuitem id="menu_sale_order_rejected"
+            name="Devis Rejetés"
+            action="action_orders_to_invoice_rejected"
+            parent="sale.sale_order_menu"
+            sequence="1"/>
+
+        <record id="view_custom_sale_order_line_form" model="ir.ui.view">
+            <field name="name">sale.order.line.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <field name="partner_shipping_id" position="after">
+                    <field name="avant_vente"/>
+                    <field name="commercial"/>
+                    <field name="apporteur"/>
+                </field>
+                <xpath expr="//field[@name='order_line']/tree" position="replace">
+                    <tree string="">
+                        <field name="sequence" widget="handle"/>
+                        <field name="product_id"
+                            attrs="{'readonly': ['|', ('qty_invoiced', '&gt;', 0)]}"
+                            context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}"
+                           />
+                        <field name="layout_category_id" groups="sale.group_sale_layout"/>
+                        <field name="name"/>
+                        <field name="product_uom_qty"
+                            string="Ordered Qty"
+                            context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}"
+                        />
+                        <field name="qty_delivered" invisible="1"
+                            attrs="{'readonly': [('qty_delivered_updateable', '=', False)]}"/>
+                        <field name="qty_invoiced"
+                            invisible="1"/>
+                        <field name="qty_to_invoice" invisible="1"/>
+                        <field name="product_uom"
+                            attrs="{'readonly': [('state', 'in', ('sale','done', 'cancel'))]}"
+                            context="{'company_id': parent.company_id}"
+                            groups="product.group_uom" options='{"no_open": True}'/>
+                        <field name="analytic_tag_ids" groups="analytic.group_analytic_accounting" widget="many2many_tags"/>
+                        <field name="price_unit"
+                            attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/>
+                        <field name="prix_gpl" invisible="1"/>
+                        <field name="remise_fournisseur" invisible="1"/>
+                        <field name="marge" invisible="1"/>
+                        <field name="frais_approche" invisible="1"/>
+                        <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
+                            attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/>
+                        <field name="discount" groups="sale.group_discount_per_so_line"/>
+                        <field name="price_subtotal" widget="monetary" groups="sale.group_show_price_subtotal"/>
+                        <field name="price_total" widget="monetary" groups="sale.group_show_price_total"/>
+                        <field name="qty_delivered_updateable" invisible="1"/>
+                        <field name="state" invisible="1"/>
+                        <field name="invoice_status" invisible="1"/>
+                        <field name="customer_lead" invisible="1"/>
+                        <field name="currency_id" invisible="1"/>
+                    </tree>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/form" position="replace">
+                    <form string="">
+                        <group>
+                            <group>
+                                <label for="qty_delivered" string="Delivered Quantity" invisible="1"/>
+                                <div invisible="1">
+                                    <field name="qty_delivered" attrs="{'readonly': [('qty_delivered_updateable', '=', False)]}"/>
+                                </div>
+                                <label for="qty_invoiced" string="Invoiced Quantity" invisible="1"/>
+                                <div invisible="1">
+                                    <field name="qty_invoiced" invisible="1"/>
+                                </div>
+                                <field name="product_id"
+                                    context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}"
+                                    attrs="{'readonly': ['|', ('qty_invoiced', '&gt;', 0)]}"
+                                   />
+                                <label for="product_uom_qty" string="Quantitée"/>
+                                <div>
+                                    <field
+                                        context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'uom_qty_change':True, 'company_id': parent.company_id}"
+                                        name="product_uom_qty" class="oe_inline"/>
+                                    <field name="product_uom" groups="product.group_uom" class="oe_inline oe_no_button"
+                                        attrs="{'readonly': [('state', 'in', ('sale','done', 'cancel'))]}"/>
+                                </div>
+                                <field name="layout_category_id" groups="sale.group_sale_layout"/>
+                            </group>
+                            <group attrs="{'invisible': [('state', '=', 'draft')]}">
+                                <field name="invoice_status" invisible="1"/>
+                                <field name="qty_to_invoice" invisible="1"/>
+                                <field name="qty_delivered_updateable" invisible="1"/>
+                                <field name="price_subtotal" invisible="1"/>
+                                <field name="prix_gpl_real"/>
+                                <label for="devise" string="Devise"/>
+                                <div class="address_format">
+                                    <field name="devise" style="width: 50%"/>
+                                    <field name="prix_gpl_value" style="width: 50%"/>
+                                </div>
+                                <label for="remise_fournisseur" string="Remise Fr (%)"/>
+                                <div>
+                                    <field name="remise_fournisseur" style="width: 50%"/>
+                                    <field name="remise_fournisseur_value" style="width: 50%"/>
+                                </div>
+                                <label for="frais_approche" string="Frais d'approche Coef"/>
+                                <div>
+                                    <field name="frais_approche" style="width: 50%"/>
+                                    <field name="frais_approche_value" style="width: 50%"/>
+                                </div>
+                                <label for="marge" string="Marge (%)"/>
+                                <div>
+                                    <field name="marge" style="width: 50%"/>
+                                    <field name="marge_value" style="width: 50%"/>
+                                </div>
+                            </group>
+                            <group attrs="{'invisible': [('state', '=', 'draft')]}">
+                                <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
+                                    attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/>
+                                <label for="customer_lead"/>
+                                <div>
+                                    <field name="customer_lead" class="oe_inline"/> days
+                                </div>
+                                <label for="analytic_tag_ids"/>
+                                <div>
+                                    <field name="analytic_tag_ids" widget="many2many_tags"/>
+                                </div>
+                            </group>
+                            <group attrs="{'invisible': [('state', '=', 'draft')]}">
+                                <field name="prix_gpl"/>
+                                <label for="discount" groups="sale.group_discount_per_so_line" string="Remise client"/>
+                                <div name="discount" groups="sale.group_discount_per_so_line">
+                                    <field name="discount" class="oe_inline"/> %%
+                                </div>
+                                <field name="price_unit" string="Prix de vente HT"/>
+                            </group>
+                            <group>
+                                <field name="first_msg" widget="html"/>
+                            </group>
+                            <group></group>
+                        </group>
+                        <label for="name"/>
+                        <field name="name"/>
+                        <div groups="base.group_no_one" invisible="1">
+                            <label for="invoice_lines"/>
+                            <field name="invoice_lines"/>
+                        </div>
+                        <field name="state" invisible="1"/>
+                    </form>
+                </xpath>
+                <xpath expr="//header" position="replace">
+                    <header><!--
+                        <button name="action_google" type="object"/>-->
+                        <button name="action_validate" string="Devis" type="object" states="draft"/>
+                        <button name="action_auto" string="Soumettre" type="object" states="validate,rejected"/>
+                        <button name="action_waiting" string="Approuver" type="object" states="auto"/>
+                        <button name="action_rejected" string="Rejeter" type="object" states="auto"/>
+                        <button name="action_quotation_send" string="Send by Email" type="object" states="waiting" class="btn-primary"/>
+                        <button name="action_quotation_send" type="object" string="Send PRO-FORMA Invoice" groups="sale.group_proforma_sales" class="btn-primary" attrs="{'invisible': ['|', ('state', '!=', 'waiting'), ('invoice_count','&gt;=',1)]}" context="{'proforma': True}"/>
+                        <button name="print_quotation" string="Print" type="object" states="waiting" class="btn-primary o_sale_print"/>
+                        <button name="action_confirm" id="action_confirm"
+                            string="Confirm Sale" class="btn-primary" type="object"
+                            states="sent"/>
+                        <button name="action_confirm"
+                            string="Confirm Sale" type="object"
+                            attrs="{'invisible': [('state', 'not in', ['waiting'])]}"/>
+                        <button name="action_quotation_send" type="object" string="Send PRO-FORMA Invoice" groups="sale.group_proforma_sales" attrs="{'invisible': ['|', ('state', '=', 'draft'), ('invoice_count','&gt;=',1)]}" context="{'proforma': True}"/>
+                        <button name="print_quotation" string="Print" type="object" states="sent,sale" class="o_sale_print"/>
+                        <button name="action_quotation_send" string="Send by Email" type="object" states="sent,sale"/>
+                        <button name="action_cancel" states="waiting,sent,sale" type="object" string="Cancel"/>
+                        <button name="action_draft" states="cancel" type="object" string="Set to Quotation"/>
+                        <button name="action_done" type="object" string="Lock" states="sale"
+                            help="If the sale is locked, you can not modify it anymore. However, you will still be able to invoice or deliver."/>
+                        <button name="action_unlock" type="object" string="Unlock" states="done" groups="sales_team.group_sale_manager"/>
+                        <button name="action_archive" string="Archive" type="object" attrs="{'invisible': [('state', '=', 'archive')]}"/>
+                        <button name="action_unarchive" string="Unarchive" type="object" states="archive"/>
+                        <field name="state" widget="statusbar" statusbar_visible="boq,draft,validate,auto,waiting,sent,sale,archive,rejected"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_margin_sale_order_line">
+            <field name="name">sale.order.line.margin.view.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_margin.sale_margin_sale_order_line"/>
+            <field name="arch" type="xml" >
+                <field name="purchase_price" groups="base.group_user" position="replace">
+                    <field name="purchase_price" groups="base.group_user" invisible="1"/>
+                </field>
+                <xpath expr="//field[@name='order_line']/form//field[@name='price_unit']" position="before">
+                    <field name="purchase_price" groups="base.group_user" string="Prix de revient"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_pricelist_action3" model="ir.actions.act_window">
+            <field name="name">Pricelists Custom</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.pricelist.item</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_product_pricelist_third" name="Pricelists Custom" parent="sale.product_menu_catalog" action="product_pricelist_action3" />
+
+    </data>
+</openerp>

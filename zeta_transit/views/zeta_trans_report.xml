@@ -1,0 +1,49 @@
+<odoo>
+    	<report
+            string="Zeta transit Minute"
+            id="report_zeta_trans_minute"
+            model="zeta.trans.minute"
+            report_type="qweb-pdf"
+            name="zeta_transit.report_zetatrans_minute"
+            file="zeta_transit.report_zetatrans_minute"
+         />
+
+<!--
+        <report
+            string="Zeta Debour et intervantions"
+            id="report_zeta_trans_avance"
+            model="zeta.trans.minute"
+            report_type="qweb-pdf"
+            name="zeta_transit.report_zetatrans_avance"
+            file="zeta_transit.report_zetatrans_avance"
+         />
+-->
+
+        <report
+            string="Zeta transit Proforma"
+            id="report_zeta_trans_proforma"
+            model="zeta.trans.proforma"
+            report_type="qweb-pdf"
+            name="zeta_transit.report_zetatrans_proforma"
+            file="zeta_transit.report_zetatrans_proforma"
+         />
+
+        <report
+            string="Zeta transit Facture"
+            id="report_zeta_trans_facture"
+            model="zeta.trans.facture"
+            report_type="qweb-pdf"
+            name="zeta_transit.report_zetatrans_facture"
+            file="zeta_transit.report_zetatrans_facture"
+         />
+
+        <!--<report
+            string="Zeta Caisse Details"
+            id="report_zeta_caisse_details"
+            model="zeta.trans.caisse"
+            report_type="qweb-pdf"
+            name="zeta_transit.zeta_trans_caisse_details_report"
+            file="zeta_transit.zeta_trans_caisse_details_report"
+         />-->
+
+</odoo>

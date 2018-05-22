@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_invoice_document">
+        <t t-call="web.external_layout">
+                <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})" />
+                <div class="page" style="font-size: 12px">
+
+                    <div class="row" style="width: 2%; padding:2%"></div>
+
+                    <div class="row">
+
+                        <div class="col-xs-12" style="text-align:center;">
+                            <h4>
+                                <span t-if="doc.type_facture == 'normal' and (doc.state in ('open', 'paid', 'draft'))">Facture</span>
+                                <span t-if="doc.type_facture == 'solde'  and (doc.state in ('open', 'paid', 'draft'))">Facture de solde</span>
+                                <span t-if="doc.type_facture == 'acompte' and (doc.state in ('open', 'paid', 'draft'))">Facture d'acompte</span>
+                                <span t-if="doc.type_facture == 'avoir' and (doc.state in ('open', 'paid', 'draft'))">Facture d'avoir</span>
+                                <span t-if="doc.type_facture == 'exoneration' and (doc.state in ('open', 'paid', 'draft'))">Facture </span>
+                                <span t-field="doc.number"/>
+                            </h4>
+                            <br></br>
+                        </div>
+
+                    </div>
+                    <div>
+                        <table style="border:none; width: 100%; font-weight: bold;">
+                            <tr >
+                                <td>Date</td>
+                                <td><span t-esc="time.strftime('%d/%m/%Y')"/></td>
+                                <td>Client final :</td>
+                                <td style="color:#81BEF7;"><span t-field="doc.partner_id"/></td>
+                            </tr>
+                            <tr >
+                                <td>Description de l'offre :</td>
+                                <td></td>
+                                <td>Adresse géographique :</td>
+                                <td style="color:#81BEF7;"><span t-field="doc.partner_id.street"/>, <span t-field="doc.partner_id.street2"/></td>
+                            </tr>
+                            <tr >
+                                <td>Date de la commande :</td>
+                                <td><span t-field="doc.date_invoice"/></td>
+                                <td>Tél :</td>
+                                <td style="color:#81BEF7;"><span t-field="doc.partner_id.phone"/></td>
+                            </tr>
+                            <tr >
+                                <td colspan="2"></td>
+                                <td>Adresse postale :</td>
+                                <td style="color:#81BEF7;"><span t-field="doc.partner_id.zip"/></td>
+                            </tr>
+                            <tr >
+                                <td colspan="2"></td>
+                                <td>N° IFU :</td>
+                                <td><span t-field="doc.partner_id.ifu"/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td>RCCM :</td>
+                                <td style="color:#81BEF7;"><span t-field="doc.partner_id.rccm"/></td>
+                            </tr>
+                            <tr >
+                                <td colspan="2"></td>
+                                <td>Division fiscale :</td>
+                                <td style="color:#81BEF7;"><span t-field="doc.partner_id.d_f"/></td>
+                            </tr>
+                            <tr >
+                                <td colspan="2"></td>
+                                <td>Adresse cadastrale :</td>
+                                <td style="color:#81BEF7;"><span t-field="doc.partner_id.adresse_cadastrale"/></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <br></br>
+
+                    <!-- Is there a discount on at least one line? -->
+                    <t t-set="display_discount" t-value="any([l.discount for l in doc.invoice_line_ids])"/>
+                    <!--Group product by categ_id-->
+                    <t t-set="product_category" t-value="[]"/>
+                    <t t-foreach="doc.invoice_line_ids" t-as="l">
+                        <t t-set="product_category" t-value="product_category+[l.product_id.categ_id]"/>
+                    </t>
+
+                    <div class="row">
+                        <table class="table table-condensed" style="border:none;">
+                            <thead style="font-size:12px; border:none;">
+                                <tr  style=" background-color:#808080; color:white;">
+                                    <th style="text-align:center; border-right:hidden;white-space: nowrap">Part number</th>
+                                    <th style="text-align:center;border-right:hidden;">Désignation</th>
+                                    <th class="text-right" style="text-align:center;border-right:hidden;">Qté</th>
+                                    <th class="text-right" style="text-align:center; white-space: nowrap;border-right:hidden;">Prix Unit.</th>
+                                    <th  class="text-right" style="text-align:center;border-right:hidden;">Rem</th>
+                                    <th class="text-right" style=" text-align:center; white-space: nowrap;">Mt Total</th>
+                                </tr>
+                            </thead>
+                            <tbody class="invoice_tbody" style="border:none; font-size:12px;">
+                                <t t-foreach="set(product_category)" t-as="category">
+                                <tr style="border:none;">
+                                    <td style="border:none;"></td>
+                                    <td style="border:none; text-align:center; background-color:#D9D9D9;"><strong t-esc="category.name"/></td>
+                                    <td style="border:none;"></td>
+                                    <td style="border:none;"></td>
+                                    <td style="border:none;"></td>
+                                    <td style="border:none;"></td>
+                                </tr>
+                                <t t-foreach="doc.invoice_line_ids" t-as="l">
+                                    <t t-if="category.id==l.product_id.categ_id.id">
+                                        <tr class="border-black" style="border:none;">
+                                            <td style="border:none; white-space: nowrap">
+                                                <span t-field="l.product_id.default_code"/></td>
+                                            <td style="border:none;"><span t-field="l.name"/></td>
+                                            <td class="text-right" style="border:none; text-align:center; white-space: nowrap;">
+                                                <span t-field="l.quantity"/>
+                                                <span t-field="l.uom_id"  groups="product.group_uom"/>
+                                            </td>
+                                            <td class="text-right" style="border:none; text-align:center; white-space: nowrap;">
+                                                <span t-field="l.price_unit"/>
+                                            </td>
+                                            <td class="text-right"
+                                                style="border:none; white-space: nowrap; text-align:center;">
+                                                <t t-if="l.discount">
+                                                <span t-field="l.discount"/>
+                                                </t>
+                                                <t t-if="l.discount == 0">
+                                                <span>-</span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right" style="border:none; white-space: nowrap;">
+                                                <t t-if="l.price_subtotal">
+                                                <span t-field="l.price_subtotal"/>
+                                                </t>
+                                                <t t-if="l.price_subtotal == 0">
+                                                <span>-</span>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                </t>
+
+                                <tr>
+                                    <td style="border:none;" colspan="2"> </td>
+                                    <td style="border:none;  text-align:right;
+                                        background-color:#D9D9D9;" colspan="2">
+                                        TOTAL HT
+                                    </td>
+                                    <td style="border: none; text-align:right;
+                                                background-color:#D9D9D9;" colspan="2">
+                                        <span t-field="doc.amount_untaxed"
+                                                t-field-options='{"widget": "monetary", "display_currency": "doc.currency_id"}'/>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-8">
+                            <table class="table table-condensed">
+                                <thead style="border: 1px solid black;">
+                                    <tr style="border: 1px solid black;">
+                                        <th style="border: 1px solid black; text-align:center;">Total HT</th>
+                                        <th style="border: 1px solid black; text-align:center;">TVA 18%</th>
+                                        <th style="border: 1px solid black; text-align:center;">Avance sur le BIC (2%)</th>
+                                        <th style="border: 1px solid black; text-align:center; background-color:#D9D9D9;">
+                                            Net à Payer
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody style="border: 1px solid black;">
+                                    <tr style="border: 1px solid black; text-align:center;">
+                                        <td style="border: 1px solid black;"><span t-field="doc.amount_untaxed"/></td>
+                                        <td style="border: 1px solid black;"><span t-field="doc.amount_tax"/></td>
+                                        <td style="border: 1px solid black;"><span t-esc="doc._get_tax_amount_by_type('BIC')"/></td>
+                                        <td style="border: 1px solid black;"><span t-field="doc.amount_total"
+                                    t-options='{"widget": "monetary"}'/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p>
+                                <strong>La présente facture Proforma est arrétée au montant de </strong>
+                            </p>
+                        </div>
+
+                    </div><br/><br/>
+
+                    <div class="row" style="position:relative;">
+                        <div class="col-xs-6" style="border: 1px solid black; font-size:13px;">
+                            <div class="row" style="text-align:center;background-color:#D9D9D9;">
+                                <strong>CONDITIONS DE VENTE</strong>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Méthode de paiement:</strong></div>
+                               <div class="col-xs-6"></div>
+                            </div>
+                             <div class="row">
+                                 <div class="col-xs-6"><strong>Conditions de paiement:</strong></div>
+                               <div class="col-xs-6"><span t-field="doc.payment_term_id.name"/></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Lieu de livraison:</strong></div>
+                               <div class="col-xs-6"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Validité de l'offre:</strong></div>
+                               <div class="col-xs-6"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6"><strong>Garantie constructeur:</strong></div>
+                               <div class="col-xs-6"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-1"></div>
+
+                        <div class="col-xs-5">
+                            <p style="font-size:14px; text-align:center;">
+                                <strong><u>Executive Manager</u></strong>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </t>
+    </template>
+
+    <template id="report_invoice_custom">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="talenty_extend.report_invoice_document" t-lang="doc.partner_id.lang"/>
+                </t>
+            </t>
+    </template>
+
+    <report
+            id="account_invoices_custom"
+            model="account.invoice"
+            string="Facture Custom"
+            report_type="qweb-pdf"
+            name="talenty_extend.report_invoice_custom"
+            file="talenty_extend.report_invoice_custom"
+            print_report_name="'Facture Custom'"
+        />
+
+</odoo>

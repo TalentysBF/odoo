@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="zeta_trans_facture" model="ir.ui.view">
+            <field name="name">zeta_trans_facture</field>
+            <field name="model">zeta.trans.facture</field>
+            <field name="arch" type="xml">
+			<form>
+				<header>
+                        <button string="Actualiser"
+                             type="object"
+                             name="actualiser"
+                             states="draft"
+                             class="oe_highlight"/>
+					    <button name="button_paid"
+                             states="draft"
+                             string="Payer"
+                             type="object"/>
+                        <field name="state" widget="statusbar"
+                             statusbar_visible="draft,paid"
+                             statusbar_colors='{"draft":"blue"}'/>
+				</header>
+
+				<sheet>
+					<div class="oe_button_box" name="button_box">
+					</div>
+					<group>
+						<field name="name"/>
+						<field name="res_client"/>
+						<field name="str_proforma"/>
+						<field name="date_create"/>
+						<field name="str_minute" invisible="1"/>
+						<field name="forme_j" invisible="1"/>
+						<field name="regime_i" invisible="1"/>
+						<field name="domiciliation_f" invisible="1"/>
+					</group>
+
+					<group>
+                        <group>
+                            <field name="numero_dossier"/>
+                            <field name="code_client"/>
+                        </group>
+                        <group>
+                            <field name="ref_p_f"/>
+                            <field name="ref_f_f"/>
+                        </group>
+					</group>
+					<group>
+						<group>
+							<field name="designation" style="text-transform: uppercase;"/>
+						</group>
+						<group>
+							<field name="qte"/>
+							<field name="colis"/>
+							<field name="poids_brut"/>
+							<field name="poids_net"/>
+						</group>
+						<group>
+							<field name="valeur_caf"/>
+							<field name="valeur_mercurial"/>
+						</group>
+						<group>
+							<field name="transport" style="text-transform: uppercase;"/>
+						</group>
+					</group>
+					<group>
+						<group>
+						<label for="d_t_d" string="Droits et Taxes Douane" style="white-space: nowrap;"/>
+						<div class="address_format">
+							<field name="d_t_d"/>
+						</div>
+							<field name="t_v_a"/>
+							<field name="b_i_c"/>
+						</group>
+						<group>
+							<label for="t_a_f" string="Total Avance de Fonds" style="white-space: nowrap;"/>
+							<div>
+								<field name="t_a_f"/>
+							</div>
+						</group>
+					</group>
+					<group>
+						<group>
+							<field name="t_s_ecor"/>
+							<field name="vaccation"/>
+							<field name="assurance"/>
+							<field name="bool_assurance" invisible="1"/>
+							<label for="p_m_d" string="Passage Mag/Douane TVA" style="white-space: nowrap;"/>
+							<div>
+								<field name="p_m_d"/>
+							</div>
+							<field name="t_v_a_d_1"/>
+							<label for="camionage" string="Camionage Manutention" style="white-space: nowrap;"/>
+							<div>
+								<field name="camionage"/>
+							</div>
+						</group>
+						<group>
+                            <field name="rem_doc_nom"/>
+                            <field name="rem_doc"/>
+							<field name="d_d_u"/>
+							<field name="facture_mnt"/>
+							<field name="facture" invisible="1"/>
+							<field name="stationement"/>
+							<field name="t_v_a_d_2"/>
+							<label for="d_f_g" string="Douane Fonds de Garantie" style="white-space: nowrap;"/>
+							<div>
+								<field name="d_f_g"/>
+							</div>
+							<field name="divers_debours"/>
+						</group>
+						<group>
+							<field name="total_debours"/>
+						</group>
+					</group>
+					<group>
+						<group>
+							<field name="ouverture"/>
+							<field name="imprime"/>
+							<field name="h_a_d"/>
+							<field name="real_had" invisible="1"/>
+							<field name="remise_had" invisible="1"/>
+							<label for="commission_a" string="Commission/Avance de Fonds" style="white-space: nowrap;"/>
+							<div>
+								<field name="commission_a"/>
+							</div>
+							<label for="commission_t" string="Commission de transit" style="white-space: nowrap;"/>
+							<div>
+								<field name="commission_t"/>
+							</div>
+							<field name="commission_d"/>
+							<field name="divers_inter"/>
+						</group>
+						<group>
+							<label for="total_int" string="Total Interventions HT" style="white-space: nowrap;"/>
+							<div>
+								<field name="total_int"/>
+								<field name="total_int_bis" invisible="1"/>
+							</div>
+							<label for="t_v_a_int_value" string="TVA sur interventions" style="white-space: nowrap;"/>
+							<div class="address_format">
+								<field name="t_v_a_int_value" style="width: 50%"/>
+								<field name="t_v_a_int" style="width: 50%"/>
+							</div>
+							<label for="total_ttc" string="Total Interventions TTC" style="white-space: nowrap;"/>
+							<div>
+								<field name="total_ttc"/>
+								<field name="total_ttc_bis" invisible="1"/>
+							</div>
+							<field name="nom_client" invisible="1"/>
+							<field name="boite_postal" invisible="1"/>
+							<field name="address_cadastrale" invisible="1"/>
+							<field name="ifu" invisible="1"/>
+							<field name="telephone" invisible="1"/>
+							<field name="fax" invisible="1"/>
+							<field name="rccm" invisible="1"/>
+							<field name="code_facture" invisible="1"/>
+							<field name="value" invisible="1"/>
+							<field name="to_pay" invisible="1"/>
+							<field name="client_id" invisible="1"/>
+						</group>
+					</group>
+					<group>
+						<group>
+							<field name="n_a_p" style="font-weight: bold;color: #7c7bad; font-weight: bold; font-size: 18px;"/>
+							<field name="n_a_p_bis" invisible="1"/>
+						</group>
+						<group>
+							<field name="note" style="text-transform: uppercase;"/>
+                            <field name="condition_vente"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+            </field>
+        </record>
+
+	<record id="zeta_tree_trans_facture" model="ir.ui.view">
+		<field name="name">facture Tree</field>
+		<field name="model">zeta.trans.facture</field>
+		<field name="arch" type="xml">
+		<tree>
+			<field name="name"/>
+			<field name="str_proforma"/>
+        	<field name="create_date"/>
+        	<field name="date_create"/>
+        	<field name="n_a_p_bis"/>
+		</tree>
+		</field>
+	</record>
+
+	<record id="zeta_filter_trans_facture" model="ir.ui.view">
+		<field name="name">facture Filter</field>
+		<field name="model">zeta.trans.facture</field>
+		<field name="arch" type="xml">
+			<search>
+				<field name="name"/>
+				<field name="str_proforma"/>
+        <field name="create_date"/>
+        <field name="date_create"/>
+        <field name="n_a_p_bis"/>
+			</search>
+		</field>
+	</record>
+
+	<record model="ir.ui.view" id="zeta_trans_facture_pivot">
+        <field name="name">Facture Pivot</field>
+        <field name="model">zeta.trans.facture</field>
+        <field name="arch" type="xml">
+            <pivot string="Facture Pivot">
+                 <field name="date_create" type="row"/>
+                 <field name="n_a_p_bis" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+	<record model="ir.actions.act_window" id="zeta_transit_facture_action_window">
+		<field name="name">facture</field>
+		<field name="res_model">zeta.trans.facture</field>
+		<field name="view_mode">tree,form,pivot</field>
+	</record>
+
+
+</odoo>

@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="report_zetatrans_minute">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="report.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+
+                        <div class="row mt32 mb32" style="font-size:14px ">
+                            <div class="col-xs-3" style="white-space: nowrap;">
+                                <strong>References:  </strong>
+                                <span t-field="o.name"/>
+                            </div>
+                            <div class="col-xs-4" style="white-space: nowrap;">
+                                <strong>Client:  </strong>
+                                <span t-field="o.res_client"/>
+                            </div>
+                            <div class="col-xs-2" style="white-space: nowrap;">
+                                <strong>Dossier:  </strong>
+                                <span t-field="o.str_dossier"/>
+                                </div>
+                            <div class="col-xs-3">
+                                <strong>Date:  </strong>
+                                <span t-usertime="%Y-%m-%d %H-%M-%S" />
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                            </div>
+                        </div>
+
+                    <t t-if="o.res_article_id" class="row">
+                        <t t-set="i" t-value="1"/>
+                        <t t-foreach="o.res_article_id" t-as="res_article_id">
+                        <t t-if="i>1" >
+                            <div style="page-break-before: always;"/>
+                        </t>
+
+                         <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <strong>ARTICLE <span t-esc="i"/></strong>
+                                    </td>
+                                    <td>
+                                        <strong><span t-field="res_article_id.name"/></strong>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    <tr class="active">
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                DETAIL MARCHANDISE
+                                        </td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Origine :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.res_origine" />
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Devise :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.res_devise"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Provenance:
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.str_provenance"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Taux Devise :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.int_valeur_devise"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                NTS :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.str_n_t_s"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Valeur Fret :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.int_valeur_fret"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Quantité Complète :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.qte_complete"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Assurance :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.assurance"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Nombre de colis :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.nbr_colis"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Autres Fret :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.autres_frais"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Poids Net (KG) :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.int_poids_net"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Valeur CAF :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.valeur_caf"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Poids Brut (KG) :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.int_poids_brut"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Valeur Mercuriale :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.valeur_mercurial"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Valeur FOB1 :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.int_valeur_fob_1"/>
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Valeur FOB2 :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.int_valeur_fob_2"/>
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <!--TARIF A APPLIQUER-->
+                                    <tr class="active">
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                TARIF A APPLIQUER
+                                        </td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Regime :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.regime"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Facturer Doits et Taxes :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <t t-if="res_article_id.facturer == True">
+                                                    <strong>OUI</strong>
+                                                </t>
+                                                <t t-if="res_article_id.facturer == False">
+                                                    <strong>NON</strong>
+                                                </t>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Categorie :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.categorie"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Certificat D'origine :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <t t-if="res_article_id.certif_id == True">
+                                                    <strong>OUI</strong>
+                                                </t>
+                                                <t t-if="res_article_id.certif_id == False">
+                                                    <strong>NON</strong>
+                                                </t>
+                                        </td>
+                                    </tr>
+                                    <!--Assurance Douane-->
+                                    <tr class="active">
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                ASSURANCE DOUANE
+                                        </td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                taux :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.taux"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Taxes :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.taxes"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Prime nette :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.prime_net"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Prime totale :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.prime_total"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                cout acte :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.cout_acte"/>
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <!--DROITS ET DOUANES-->
+                                    <tr class="active">
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                DROITS
+                                        </td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Droits de douane :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.d_d"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                CPV ( 1% ):
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.c_p_v"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Statistique ( 1% ):
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.statistique"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                TVA ( 18% ):
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.float_t_v_a"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                PCS ( 0.8% ) :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.p_c_s"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                PEA :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.peage"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                PC (0.5%):
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.p_c"/>
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-center" style="background-color: #f0eeee; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: #f0eeee; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-left" style="background-color: #f0eeee; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            TOTAL DES DROITS :
+                                        </td>
+                                        <td class="text-center" style="background-color: #f0eeee; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="res_article_id.total_droits"/>
+                                        </td>
+                                    </tr>
+                                    <!--TAXES-->
+                                    <tr>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                TAXES
+                                        </td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                R.I :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.r_i"/>
+                                        </td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Remise speciale :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.remise_special"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                A.I.B :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.a_i_b"/>
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                TOTAL DES TAXES :
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                <span t-field="res_article_id.total_taxes"/>
+                                        </td>
+                                    </tr>
+                                <tr class="active">
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    <td class="text-left" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            Total Droits et Taxes :
+                                        </td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="res_article_id.droits_taxes"/>
+                                        </td>
+                                    </tr>
+                            </tbody>
+                         </table>
+                         <t t-set="i" t-value="i+1"/>
+                        </t>
+                    </t>
+
+                    <div style="page-break-before: always;">
+                    <table class="table table-condensed">
+                            <tbody>
+                                    <tr class="active">
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                AVANCE DE FONDS
+                                        </td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                DROITS
+                                        </td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Droits de Douane
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.int_final_dd" />
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                                Redevance statistique
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.int_final_rs" />
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                             PCS ( 0.8% )
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.int_final_pcs" />
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                             PC ( 0.5% )
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.int_final_pc" />
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                             PEA
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.int_final_pea" />
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                             CPV ( 1% )
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.int_final_cpv" />
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                             TVA ( 18% )
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.int_final_tva" />
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                             Total des Droits
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.int_final_tdt" />
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                             TAXES
+                                        </td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                             RI
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.int_final_ri" />
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                             AIB
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.int_final_aib" />
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                             RSP
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.int_final_rsp" />
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            TOTAL DES TAXES
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.int_final_ttg" />
+                                        </td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            TOTAL DROITS ET TAXES
+                                        </td>
+                                        <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    </tr>
+                                    <tr class="active">
+                                        <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            TOTAL DROITS ET TAXES
+                                        </td>
+                                        <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                            <span t-field="o.m_total_d" />
+                                        </td>
+                                    </tr>
+                            </tbody>
+                    </table>
+                    </div>
+
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+
+<!--
+<template id="report_zetatrans_avance">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="report.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <h3>Avance  <span t-field="o.a_name"/></h3>
+
+                    <div class="container">
+
+                    <table class="table table-condensed">
+                        <thead>
+                        </thead>
+                        <tbody>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        DEBOURS
+                                    </td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        T.S.ECOR
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.t_s_ecor"/>
+                                    </td>
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.decl_douane"/>
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.decl_value"/>
+                                    </td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Vacation
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.vaccation"/>
+                                    </td>
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Facture Frontiere N.
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.f_f_n"/>
+                                    </td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Assurance
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.assurance"/>
+                                    </td>
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Montant Facture Frontiere
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.m_f_f"/>
+                                    </td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Passage Mag.S/Douane
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.p_m_d"/>
+                                    </td>
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Stationement
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.stationement"/>
+                                    </td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        TVA
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.t_v_a_d_1"/>
+                                    </td>
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        TVA
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.t_v_a_d_2"/>
+                                    </td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.camionage"/>
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.camionage_value"/>
+                                    </td>
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Douane FG
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.douane_fg"/>
+                                    </td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Nom Remise Doc
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.rem_doc"/>
+                                    </td>
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Divers
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.divers_debours"/>
+                                    </td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Montant Remise Doc
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.m_r_d"/>
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Total Debours
+                                    </td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.total_debours"/>
+                                    </td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        INTERVENTIONS
+                                    </td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Ouverture de dossier
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.ouverture_d"/>
+                                    </td>
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Avance de fonds
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.avance"/>
+                                    </td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Imprime et timbres
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.imprime"/>
+                                    </td>
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Transit
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.transit"/>
+                                    </td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Honoraire Des agrées en douane (H.A.D)
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.honoraire"/>
+                                    </td>
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Debours
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.debours"/>
+                                    </td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Divers
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.divers_inter"/>
+                                    </td>
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        TVA 18%
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.t_v_a_d_3"/>
+                                    </td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Total HT
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.total_ht"/>
+                                    </td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    <td class="text-center" style="background-color: white; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                               </tr>
+                               <tr class="active">
+                                    <td class="text-left" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        Total Interventions T.T.C
+                                    </td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;">
+                                        <span t-field="o.total_ttc"/>
+                                    </td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                                    <td class="text-center" style="background-color: #e6e3e3; font-weight: bold; border:   1px solid black; border-bottom: 1px solid black;"></td>
+                               </tr>
+                        </tbody>
+                    </table>
+                    </div>
+
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+-->
+</odoo>

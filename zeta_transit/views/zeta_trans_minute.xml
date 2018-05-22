@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+        <record id="zeta_trans_minute" model="ir.ui.view">
+            <field name="name">zeta_trans_minute</field>
+            <field name="model">zeta.trans.minute</field>
+            <field name="arch" type="xml">
+		<form>
+			<header>
+                <button string="Actualiser" type="object" name="actualiser" class="oe_highlight"/>
+			</header>
+			<sheet>
+				<div class="oe_button_box" name="button_box">
+				</div>
+				<group>
+					<group>
+						<field name="res_client" />
+						<field name="article_number"/>
+						<field name="name" invisible="1"/>
+					</group>
+					<group>
+						<field name="str_dossier"/>
+						<field name="date_date"/>
+					</group>
+				</group>
+				<notebook>
+					<page name="Article" string="Article">
+						<field name="res_article_id">
+						<tree>
+							<field name="name"/>
+							<field name="droits_taxes"/>
+							<field name="total_droits"/>
+							<field name="total_taxes"/>
+						</tree>
+						<form>
+							<sheet>
+									<group>
+										<field name="name" style="text-transform: uppercase;"/>
+									</group>
+									<separator/>
+									<group string="DETAIL MARCHANDISES" name="DETAIL_MARCHANDISES">
+										<group>
+											<field name="res_origine"/>
+											<field name="str_provenance"/>
+											<field name="str_n_t_s" style="text-transform: uppercase; maxlength:13;"/>
+											<field name="qte_complete"/>
+											<field name="nbr_colis"/>
+											<field name="int_poids_net"/>
+											<field name="int_poids_brut"/>
+											<field name="int_valeur_fob_1"/>
+											<field name="int_valeur_fob_2"/>
+										</group>
+										<group>
+											<field name="res_devise"/>
+											<field name="int_valeur_devise"/>
+											<field name="int_valeur_fret"/>
+											<field name="assurance"/>
+											<field name="bool_assurance"/>
+											<field name="autres_frais"/>
+											<field name="valeur_caf" style="font-weight: bold;color: #7c7bad; font-weight: bold; font-size: 18px;"/>
+											<field name="valeur_mercurial" style="font-weight: bold;color: #7c7bad; font-weight: bold; font-size: 18px;"/>
+										</group>
+									</group>
+									<group name="TARIF_A_APPLIQUE" string="TARIF A APPLIQUER">
+										<group>
+											<field name="regime"/>
+											<field name="categorie"/>
+										</group>
+										<group>
+											<field name="facturer"/>
+											<field name="certif_id" attrs="{'invisible': [('regime', 'not in',['u_a_t','u_s_t'])]}"/>
+											<field name="count_tva" attrs="{'invisible': [('regime', 'not in',['t_e_c',])]}"/>
+										</group>
+									</group>
+									<group string="ASSURANCE DOUANE" name="ASSURANCE_DE_DOUANE">
+										<group>
+											<field name="taux"/>
+											<field name="prime_net" />
+											<field name="cout_acte" />
+										</group>
+										<group>
+											<label for="taxes_taux" string="Taxes"/>
+											<div class="address_format">
+												<field name="taxes_taux" style="width: 50%"/>
+												<field name="taxes" style="width: 50%"/>
+											</div>
+											<field name="prime_total" />
+										</group>
+									</group>
+									<group string="DROITS" name="DROITS_DE_DOUANE">
+										<group>
+											<field name="d_d" />
+											<field name="statistique" />
+											<label for="p_c_s_value" string="PCS"/>
+											<div class="address_format">
+												<field name="p_c_s_value" style="width: 50%"/>
+												<field name="p_c_s" style="width: 50%"/>
+											</div>
+											<field name="p_c" />
+										</group>
+										<group>
+											<field name="c_p_v" />
+											<field name="float_t_v_a" />
+											<label for="peage_comp" string="Peage"/>
+											<div class="address_format">
+												<field name="peage_comp" style="width: 50%" />
+												<field name="peage" style="width: 50%" />
+											</div>
+										</group>
+										<group>
+											<field name="total_droits" />
+										</group>>
+									</group>
+									<group name="TAXES" string="TAXES">
+										<group>
+											<field name="r_i" invisible="1"/>
+											<label for="a_i_b_select" string="A.I.B"/>
+											<div class="address_format">
+												<field name="a_i_b_select" style="width: 50%"/>
+												<field name="a_i_b" style="width: 50%"/>
+											</div>
+											<field name="r_i"/>
+										</group>
+										<group>
+											<label for="remise_val" string="Remise special"/>
+											<div class="address_format">
+												<field name="remise_val" style="width: 50%"/>
+												<field name="remise_special" style="width: 50%"/>
+											</div>
+										</group>
+										<group>
+											<field name="total_taxes" />
+										</group>
+									</group>
+									<group name="DROITS ET TAXES" string="DROITS ET TAXES">
+										<field name="droits_taxes" />
+									</group>
+									<group name="INTERVENTIONS" string="INTERVENTIONS">
+										<group>
+											<field name="honoraire" />
+											<field name="secteur" />
+										</group>
+									</group>
+							</sheet>
+						</form>
+						</field>
+						<group>
+						<group string="TOTAL VALEUR CAF">
+							  <field name="fin_caf"/>
+						</group>
+						<group></group>
+						<group name="AVANCE DE FONDS" string="AVANCE DE FONDS">
+							  <field name="int_final_dd" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							  <field name="int_final_rs" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							  <field name="int_final_pcs" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							  <field name="int_final_pc" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							  <field name="int_final_pea" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							  <field name="int_final_cpv" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							  <field name="int_final_tva" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							  <field name="int_final_tdt" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}" style="font-weight: bold;color: #7c7bad; font-weight: bold; font-size: 18px;"/>
+						</group>
+						<group string="_">
+
+							  <field name="int_final_ri" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							  <field name="int_final_aib" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							  <field name="int_final_rsp" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							  <field name="int_final_ttg" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}" style="font-weight: bold;color: #7c7bad; font-weight: bold; font-size: 18px;"/>
+						</group>
+						<group></group>
+						<group>
+							<label for="m_total_d" string="TOTAL AVANCE DE FONDS" style="white-space: nowrap;"/>
+							<div class="address_format">
+								<field name="m_total_d" style="font-weight: bold;color: #7c7bad; font-weight: bold; font-size: 18px;"/>
+							</div>
+						</group>
+						</group>
+					</page>
+				</notebook>
+				<group name="DEBOURS" string="DEBOURS">
+					<group>
+						<field name="t_s_ecor"/>
+						<field name="vaccation"/>
+						<field name="assurance"/>
+						<field name="int_final_brut" invisible="1"/>
+						<label for="p_m_d" string="Passage Mag.S/Douane" style="white-space: nowrap;"/>
+						<div class="address_format">
+							<field name="p_m_d" style="width: 50%"/>
+							<field name="p_m_d_val" style="width: 50%"/>
+						</div>
+						<field name="t_v_a_d_1"/>
+						<label for="camionage" string="Camionage"/>
+						<div class="address_format">
+							<field name="camionage" style="width: 50%" />
+							<field name="camionage_value" style="width: 50%" />
+						</div>
+						<field name="rem_doc" style="text-transform: uppercase;"/>
+						<field name="m_r_d"/>
+					</group>
+					<group>
+						<label for="decl_douane" string="Decl de douane unique" style="white-space: nowrap;"/>
+						<div class="address_format">
+							<field name="decl_douane" style="width: 50%"/>
+							<field name="decl_value" style="width: 50%"/>
+						</div>
+						<field name="f_f_n" style="text-transform: uppercase;"/>
+						<label for="m_f_f" string="Montant Facture Frontiere" style="white-space: nowrap;"/>
+						<div class="address_format">
+							<field name="m_f_f"/>
+						</div>
+						<field name="stationement"/>
+						<field name="t_v_a_d_2" />
+						<field name="douane_fg"/>
+						<field name="divers_debours"/>
+					</group>
+					<group> </group>
+					<group>
+						<field name="total_debours" style="font-weight: bold;color: #7c7bad; font-weight: bold; font-size: 18px;"/>
+						<field name="total_debours_bis" invisible="1"/>
+					</group>
+				</group>
+				<group name="INTERVENTIONS" string="INTERVENTIONS">
+					<group>
+						<field name="ouverture_d"/>
+						<field name="imprime"/>
+						<field name="honoraire"/>
+						<field name="h_a_d" invisible="1"/>
+						<field name="remise_had"/>
+						<field name="divers_inter"/>
+					</group>
+					<group name="COMMISSIONS" string="COMMISSIONS">
+						<label for="avance" string="Avance de fonds"/>
+						<div class="address_format">
+							<field name="avance_taux" style="width: 50%" />
+							<field name="avance" style="width: 50%"/>
+						</div>
+						<label for="transit" string="Transit"/>
+						<div class="address_format">
+							<field name="transit_taux" style="width: 50%" />
+							<field name="transit" style="width: 50%"/>
+						</div>
+						<label for="debours" string="Debours"/>
+						<div class="address_format">
+							<field name="debours_taux" style="width: 50%" />
+							<field name="debours" style="width: 50%"/>
+						</div>
+						<field name="total_ht"/>
+					</group>
+					<group>
+						<field name="t_v_a_d_3" style="font-weight: bold;color: #7c7bad; font-weight: bold; font-size: 18px;"/>
+					</group>
+					<group>
+						<label for="total_ttc" string="Total Intervention T.T.C" style="white-space: nowrap;"/>
+						<div class="address_format">
+							<field name="total_ttc" style="font-weight: bold;color: #7c7bad; font-weight: bold; font-size: 18px;"/>
+						</div>
+					</group>
+				</group>
+			</sheet>
+		</form>
+            </field>
+        </record>
+
+	<record id="zeta_tree_trans_minute" model="ir.ui.view">
+		<field name="name">Minute Tree</field>
+		<field name="model">zeta.trans.minute</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="name"/>
+				<field name="res_client"/>
+				<field name="str_dossier"/>
+				<field name="date_date"/>
+			</tree>
+		</field>
+	</record>
+	<record id="zeta_filter_trans_minute" model="ir.ui.view">
+		<field name="name">Minute Filter</field>
+		<field name="model">zeta.trans.minute</field>
+		<field name="arch" type="xml">
+			<search>
+				<field name="name"/>
+				<field name="res_client"/>
+				<field name="str_dossier"/>
+				<field name="date_date"/>
+			</search>
+		</field>
+	</record>
+
+	<record model="ir.actions.act_window" id="zeta_transit_minute_action_window">
+		<field name="name">Minute</field>
+		<field name="res_model">zeta.trans.minute</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+
+	<record id="zeta_transit_proforma_detail_action_window" model="ir.actions.act_window">
+            <field name="name">Proforma du Dossier</field>
+            <field name="res_model">zeta.trans.proforma</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="context">{'search_default_str_minute': active_id}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Proforma.
+              </p>
+			</field>
+	</record>
+
+	<record id="zeta_trans_minute_zeta_view_buttons" model="ir.ui.view">
+            <field name="name">zeta.trans.minute.view.buttons</field>
+            <field name="model">zeta.trans.minute</field>
+            <field name="inherit_id" ref="zeta_trans_minute" />
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="action"
+							name="%(zeta_transit_proforma_detail_action_window)d" icon="fa-file-text">
+                        <field string="Proforma" name="name" widget="statinfo"/>
+                    </button>
+                </div>
+            </field>
+	</record>
+
+</odoo>

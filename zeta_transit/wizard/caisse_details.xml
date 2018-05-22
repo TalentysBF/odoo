@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_zeta_trans_caisse_details_wizard" model="ir.ui.view">
+            <field name="name">zeta.trans.caisse.details.wizard.form</field>
+            <field name="model">zeta.trans.caisse.details.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Details Caisse">
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                    <footer>
+                        <button name="generate_report" string="Print" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="zeta_transit_caisse_detail_action_window" model="ir.actions.act_window">
+            <field name="name">Caisse Details</field>
+            <field name="res_model">zeta.trans.caisse.details.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+</odoo>

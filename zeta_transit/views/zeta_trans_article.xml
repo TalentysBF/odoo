@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record model="ir.ui.view" id="zeta_trans_article">
+
+            <field name="name">zeta.trans.article</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form//sheet//div[@class='oe_title']//div" position="inside">
+                    <div>
+                        <field name="is_zeta_trans_article"/>
+                        <label for="is_zeta_trans_article"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+</odoo>

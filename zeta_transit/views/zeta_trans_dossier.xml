@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="zeta_trans_dossier" model="ir.ui.view">
+            <field name="name">zeta_trans_dossier</field>
+            <field name="model">zeta.trans.dossier</field>
+            <field name="arch" type="xml">
+				<form>
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+                        </div>
+						<group>
+							<group>
+								<field name="name"/>
+								<field name="pre_name" invisible="1"/>
+								<field name="test" invisible="1"/>
+								<field name="str_bureau"/>
+								<field name="client" domain="[('is_zeta_trans_client', '=' ,True)]"/>
+							</group>
+							<group>
+								<field name="type_operation"/>
+								<field name="date"/>
+							</group>
+						</group>
+						<group>
+							<group>
+								<label for="nbr_nature" string="Nombre et Nature des Colis" style="white-space: nowrap;"/>
+								<div>
+									<field name="nbr_nature" style="text-transform: uppercase;"/>
+								</div>
+								<field name="destinataire" domain="[('is_zeta_trans_destinatair', '=' ,True)]"/>
+								<field name="expediteur" domain="[('is_zeta_trans_expediteur', '=' ,True)]"/>
+       							<field name="terrestre"/>
+       							<field name="aerien"/>
+       							<field name="maritime"/>
+       							<field name="ferovier"/>
+								<label for="n_transport" string="N°. Moyen de Transport" style="white-space: nowrap;"/>
+								<div>
+									<field name="n_transport"/>
+								</div>
+								<field name="n_bl"/>
+								<field name="n_conteneur"/>
+								<field name="n_sommier"/>
+							</group>
+							<group>
+								<field name="designation" style="text-transform: uppercase;"/>
+								<field name="poids_brut"/>
+								<field name="poids_net"/>
+								<field name="n_repertoire"/>
+								<field name="n_declaration"/>
+								<field name="n_liquidation"/>
+								<label for="ref_p_f" string="Référence Proforma Fournisseur" style="white-space: nowrap;"/>
+								<div>
+									<field name="ref_p_f"/>
+								</div>
+								<label for="ref_f_f" string="Référence Facture Fournisseur" style="white-space: nowrap;"/>
+								<div>
+									<field name="ref_f_f"/>
+								</div>
+								<label for="n_rangement" string="N°. Boite de Rangement" style="white-space: nowrap;"/>
+								<div>
+									<field name="n_rangement"/>
+								</div>
+							</group>
+						</group>
+						<group>
+							<group>
+									<field name="p_j_1"/>
+							</group>
+							<group>
+									<field name="p_j_2"/>
+							</group>
+						</group>
+						<group>
+							<field name="observation"/>
+						</group>
+					</sheet>
+				</form>
+            </field>
+        </record>
+
+
+	<record id="zeta_tree_trans_dossier_tree" model="ir.ui.view">
+		<field name="name">Dossier Tree</field>
+		<field name="model">zeta.trans.dossier</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="name"/>
+				<field name="client"/>
+				<field name="type_operation"/>
+				<field name="expediteur"/>
+				<field name="destinataire"/>
+				<field name="date"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="zeta_filter_trans_dossier_filter" model="ir.ui.view">
+		<field name="name">Dossier Filter</field>
+		<field name="model">zeta.trans.dossier</field>
+		<field name="arch" type="xml">
+			<search>
+				<field name="name"/>
+				<field name="client"/>
+				<field name="type_operation"/>
+				<field name="expediteur"/>
+				<field name="destinataire"/>
+				<field name="date"/>
+			</search>
+		</field>
+	</record>
+
+
+	<record model="ir.actions.act_window" id="zeta_transit_dossier_action_window">
+		<field name="name">Dossier</field>
+		<field name="res_model">zeta.trans.dossier</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+
+	<record id="zeta_transit_dossier_details_action_window" model="ir.actions.act_window">
+            <field name="name">Dossier du client</field>
+            <field name="res_model">zeta.trans.dossier</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="context">{'search_default_client': active_id}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Dossier.
+              </p>
+			</field>
+	</record>
+
+
+	<record id="zeta_transit_minute_action_detail_window" model="ir.actions.act_window">
+            <field name="name">Minute du Dossier</field>
+            <field name="res_model">zeta.trans.minute</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="context">{'search_default_str_dossier': active_id}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Minute.
+              </p>
+            </field>
+	</record>
+
+	<record id="zeta_trans_dossier_zeta_view_buttons" model="ir.ui.view">
+            <field name="name">zeta.trans.dossier.view.buttons</field>
+            <field name="model">zeta.trans.dossier</field>
+            <field name="inherit_id" ref="zeta_trans_dossier" />
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="action" name="%(zeta_transit_minute_action_detail_window)d" icon="fa-clock-o">
+                        <field string="Minute" name="test" widget="statinfo"/>
+                    </button>
+                </div>
+            </field>
+	</record>
+
+</odoo>

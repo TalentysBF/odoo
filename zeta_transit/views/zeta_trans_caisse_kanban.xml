@@ -1,0 +1,44 @@
+<odoo>
+
+<record id="zeta_transit_caisse_kanban_view" model="ir.ui.view">
+		<field name="name">zeta.trans.caisse.form.kanban</field>
+		<field name="model">zeta.trans.caisse.kanban</field>
+		<field name="arch" type="xml">
+			<kanban create="false" color="decoration-muted">
+               <field name="name"/>
+               <field name="autheur"/>
+               <field name="date"/>
+               <field name="beneficiaire"/>
+               <field name="n_dossier"/>
+               <field name="type_mouvement"/>
+               <field name="montant"/>
+               <field name="solde" invisible="1"/>
+                <templates>
+                    <t t-name="kanban-box">
+                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <strong><span><t t-esc="record.beneficiaire.value"/></span></strong>
+                                </div>
+                                <div class="col-xs-6 pull-right text-right">
+                                    <strong><span><t t-esc="record.montant.value"/></span></strong>
+                                </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-xs-6 text-muted">
+                                    <span><t t-esc="record.type_mouvement.value"/> <t t-esc="record.date.value"/></span>
+                                </div>
+                                <div class="col-xs-6">
+                                    <span class="pull-right text-right">
+                                        <field name="n_dossier" widget="kanban_label_selection"/>
+                                    </span>
+                                </div>
+                            </div>
+                         </div>
+                    </t>
+                </templates>
+			</kanban>
+		</field>
+</record>
+
+</odoo>

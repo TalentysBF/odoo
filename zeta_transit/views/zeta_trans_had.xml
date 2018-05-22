@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_zeta_trans_had" model="ir.ui.view">
+            <field name="name">zeta.trans.had.view</field>
+            <field name="model">zeta.trans.had</field>
+            <field name="arch" type="xml">
+                <form string="Calcul HAD" class="oe_form_configuration">
+                    <header>
+                        <button string="Remise a zero" type="object" name="cancel" class="oe_highlight"/>
+                    </header>
+                    <group></group>
+                    <group></group>
+                    <group></group>
+                    <group></group>
+                    <group></group>
+                    <group></group>
+                    <group >
+                        <group>
+                            <field name="valeur_caf"/>
+                            <field name="secteur"/>
+                            <field name="honoraire"/>
+                        </group>
+                    </group>
+                    <div>
+                        <span>(*) Calcul de la HAD.</span>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_zeta_trans_had" model="ir.actions.act_window">
+            <field name="name">Configure Purchases</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">zeta.trans.had</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+        </record>
+
+        <menuitem id="menu_zeta_trans_had" name="HAD" parent="zeta_transit_menu"
+                  action="action_zeta_trans_had"/>
+</odoo>

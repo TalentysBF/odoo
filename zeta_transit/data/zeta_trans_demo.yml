@@ -1,0 +1,194 @@
+-
+  !record {model: 'zeta.trans.caisse.solde.kanban', id: base.zeta_trans_solde_1}:
+    solde: 75000000
+-
+
+-
+  !record {model: 'res.partner', id: base.zeta_trans_client_1}:
+    name: 'Bertand Client'
+    is_zeta_trans_client: True
+    boite_postale: '45678IKJGVFDE5687U'
+    address_cadastrale: '6789IJBVHCR57T68YU'
+    rccm: '5687985RFGDH67YK'
+    ifu: '465768798BHGFGYUHI'
+-
+
+-
+  !record {model: 'res.partner', id: base.zeta_trans_client_2}:
+    name: 'Herve Client'
+    is_zeta_trans_client: True
+    boite_postale: '45678IKJGVFDE5687U'
+    address_cadastrale: '6789IJBVHCR57T68YU'
+    rccm: '5687985RFGDH67YK'
+    ifu: '465768798BHGFGYUHI'
+-
+  !record {model: 'zeta.trans.bureau', id: base.zeta_trans_bureau}:
+    name: 'Bobo Dioulasso'
+    code_dossier: '500'
+    code_facture: 'F20'
+    code_proforma: 'P20'
+-
+
+-
+  !record {model: 'res.partner', id: base.zeta_trans_exp_1}:
+    name: 'Franck Exp'
+    is_zeta_trans_expediteur: True
+-
+
+-
+  !record {model: 'res.partner', id: base.zeta_trans_exp_2}:
+    name: 'Elsa Exp'
+    is_zeta_trans_expediteur: True
+-
+
+-
+  !record {model: 'res.partner', id: base.zeta_trans_dest_1}:
+    name: 'Samuel Dest'
+    is_zeta_trans_destinatair: True
+-
+
+-
+  !record {model: 'res.partner', id: base.zeta_trans_dest_2}:
+    name: 'Junior Dest'
+    is_zeta_trans_destinatair: True
+-
+
+-
+  !record {model: zeta.trans.dossier, id: base.zeta_trans_dossier_1}:
+    client: base.zeta_trans_client_1
+    type_operation: 'export'
+    str_bureau: base.zeta_trans_bureau
+    destinataire: base.zeta_trans_dest_1
+    expediteur: base.zeta_trans_exp_1
+-
+
+-
+  !record {model: zeta.trans.dossier, id: base.zeta_trans_dossier_2}:
+    client: base.zeta_trans_client_2
+    type_operation: 'import'
+    str_bureau: base.zeta_trans_bureau
+    destinataire: base.zeta_trans_dest_2
+    expediteur: base.zeta_trans_exp_2
+-
+
+-
+  !record {model: zeta.trans.minute, id: base.zeta_trans_minute_1}:
+    res_client: base.zeta_trans_client_1
+    str_dossier: base.zeta_trans_dossier_1
+-
+
+-
+  !record {model: zeta.trans.minute, id: base.zeta_trans_minute_2}:
+    res_client: base.zeta_trans_client_2
+    str_dossier: base.zeta_trans_dossier_2
+-
+
+-
+  !record {model: zeta.trans.minute.article, id: base.zeta_trans_minute_article_1}:
+    minute_id: base.zeta_trans_minute_1
+    name: 'Test 1'
+    qte_complete: 876
+    nbr_colis: 969
+    int_poids_net: 234
+    int_poids_brut: 234
+    int_valeur_fob_1: 234
+    int_valeur_fob_2: 23
+    int_valeur_devise: 4534
+    int_valeur_fret: 234
+    assurance: 23534
+    autres_frais: 434055
+    valeur_mercurial: 2342
+    regime: 't_e_c'
+    peage_comp: '0.075'
+    categorie: '2'
+    taux: 43
+    secteur: '2'
+-
+
+-
+  !record {model: zeta.trans.minute.article, id: base.zeta_trans_minute_article_2}:
+    minute_id: base.zeta_trans_minute_1
+    name: 'Test 2'
+    qte_complete: 81234
+    nbr_colis: 969234
+    int_poids_net: 23434
+    int_poids_brut: 23434
+    int_valeur_fob_1: 2344
+    int_valeur_fob_2: 233
+    int_valeur_devise: 4534434
+    int_valeur_fret: 23443
+    assurance: 2353443
+    autres_frais: 434545
+    valeur_mercurial: 23342
+    regime: 't_e_c'
+    peage_comp: '0.075'
+    categorie: '3'
+    taux: 32
+    secteur: '2'
+-
+
+-
+  !record {model: zeta.trans.minute.article, id: base.zeta_trans_minute_article_3}:
+    minute_id: base.zeta_trans_minute_1
+    name: 'Test 3'
+    qte_complete: 81234
+    nbr_colis: 969234
+    int_poids_net: 23434
+    int_poids_brut: 23434
+    int_valeur_fob_1: 2344
+    int_valeur_fob_2: 233
+    int_valeur_devise: 4534434
+    int_valeur_fret: 23443
+    assurance: 2353443
+    autres_frais: 434545
+    valeur_mercurial: 23342
+    regime: 't_e_c'
+    peage_comp: '0.075'
+    categorie: '3'
+    taux: 32
+    secteur: '2'
+-
+
+-
+  !record {model: zeta.trans.minute.article, id: base.zeta_trans_minute_article_4}:
+    minute_id: base.zeta_trans_minute_2
+    name: 'Test 4'
+    qte_complete: 81234
+    nbr_colis: 969234
+    int_poids_net: 23434
+    int_poids_brut: 23434
+    int_valeur_fob_1: 2344
+    int_valeur_fob_2: 233
+    int_valeur_devise: 4534434
+    int_valeur_fret: 23443
+    assurance: 2353443
+    autres_frais: 434545
+    valeur_mercurial: 23342
+    regime: 't_e_c'
+    peage_comp: '0.075'
+    categorie: '3'
+    taux: 32
+    secteur: '2'
+-
+
+-
+  !record {model: zeta.trans.minute.article, id: base.zeta_trans_minute_article_5}:
+    minute_id: base.zeta_trans_minute_2
+    name: 'Test 5'
+    qte_complete: 81234
+    nbr_colis: 969234
+    int_poids_net: 23434
+    int_poids_brut: 23434
+    int_valeur_fob_1: 2344
+    int_valeur_fob_2: 233
+    int_valeur_devise: 4534434
+    int_valeur_fret: 23443
+    assurance: 2353443
+    autres_frais: 4345450
+    valeur_mercurial: 23342
+    regime: 't_e_c'
+    peage_comp: '0.075'
+    categorie: '3'
+    taux: 32
+    secteur: '2'
+-

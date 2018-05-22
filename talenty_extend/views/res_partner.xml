@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="res_partner_inher_form_view">
+            <field name="name">res.partner.talentys.form</field>
+            <field name="model">res.partner</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="website" position="after">
+                    <field name="ifu"/>
+                    <field name="rccm"/>
+                    <field name="r_i"/>
+                    <field name="d_f"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

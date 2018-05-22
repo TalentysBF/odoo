@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record model="ir.ui.view" id="zeta_trans_client">
+
+            <field name="name">zeta.trans.client</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//form//sheet//div//field[@name='company_type']" position="replace">
+                 <field name="company_type" widget="radio"
+                      class="oe_edit_only"
+                      options="{'horizontal': true}" invisible="1"/>
+            </xpath>
+		    <xpath expr="//form//sheet//group" position="replace">
+		    <group>
+			            <group>
+                            <field name="type" attrs="{'invisible': [('parent_id','=', False)]}" groups="base.group_no_one"/>
+                            <label string="Address" invisible="1"/>
+                            <div class="oe_edit_only">
+                                <button name="open_parent" type="object" string="(edit)" class="oe_link" attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'contact')]}"/>
+                            </div>
+                            <field name="numero_client" placeholder="Numero Client"
+                                    attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                            <field name="boite_postale" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                            <field name="street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" invisible="1"/>
+                            <field name="street2" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" invisible="1"/>
+                            <field name="address_cadastrale" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                            <field name="city" placeholder="Ville"
+                                    attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                            <field name="state_id" placeholder="Pays" options='{"no_open": True}'
+                                    attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" 
+				                    context="{'country_id': country_id, 'zip': zip}" invisible="1"/>
+                            <field name="zip" placeholder="ZIP"
+                                    attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" invisible="1"/>
+                            <field name="country_id" placeholder="Country" options='{"no_open": True, "no_create": True}'
+                                    attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                            <field name="website" widget="url" placeholder="http://www.zeta-bf.com"/>
+                            <field name="rccm"/>
+                            <field name="ifu"/>
+                            <field name="forme_j"/>
+                            <field name="regime_i"/>
+                            <field name="domiciliation_f"/>
+                            <field name="category_id" widget="many2many_tags" placeholder="Tags..." options="{'no_create_edit': True}" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="function" placeholder="e.g. Sales Director"
+                                invisible="1"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="mobile" widget="phone"/>
+                            <field name="fax"/>
+                            <field name="user_ids" invisible="1"/>
+                            <field name="email" widget="email" attrs="{'required': [('user_ids','!=', [])]}"/>
+                            <field name="is_zeta_trans_destinatair"/>
+                            <field name="is_zeta_trans_expediteur" />
+                            <field name="is_zeta_trans_client" />
+                            <field name="title" options='{"no_open": True}'
+                                invisible="1"/>
+                            <field name="lang" invisible="1"/>
+
+                        </group>
+                        <group name="SOLDE" string="SOLDE">
+                            <field name="to_pay"/>
+                            <field name="paid"/>
+                        </group>
+		    </group>
+		    </xpath>
+            </field>
+
+     </record>
+
+
+    <record id="res_partner_zeta_view_buttons" model="ir.ui.view">
+            <field name="name">res.partner.zeta.view.buttons</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="action" attrs="{'invisible': [('is_zeta_trans_client', '=', False)]}"
+                            name="%(zeta_transit_dossier_details_action_window)d" icon="fa-folder">
+                        <field string="Dossier" name="test" widget="statinfo"/>
+                    </button>
+                </div>
+                <page name="internal_notes" position="inside">
+                    <group colspan="2" col="2">
+                        <separator string="Warning on the Sales Order" colspan="4" />
+                            <field name="test" nolabel="1" />
+                            <field name="test" colspan="3" nolabel="1" />
+                    </group>
+                </page>
+            </field>
+	</record>
+
+
+
+	<menuitem name="Zeta Transit" id="zeta_transit_menu_root"/>
+
+	<menuitem name="Zeta Transit Gestion" id="zeta_transit_menu" parent="zeta_transit_menu_root"/>
+
+    <menuitem name="Zeta Transit Caisse" id="zeta_transit_caisse" parent="zeta_transit_menu_root" />
+
+    <menuitem name="Zeta Transit Config" id="zeta_transit_config" parent="zeta_transit_menu_root"/>
+
+    <!-- ZETA CAISSE --><!--
+    <menuitem name="Caisse" id="zeta_transit_menu_caisse" parent="zeta_transit_caisse"
+              action="zeta_transit_caisse_kanban_form_action_window"/>
+
+    <menuitem name="Caisse Kaban" id="zeta_transit_menu_caisse_kaban" parent="zeta_transit_caisse"
+              action="zeta_transit_caisse_kanban_action_window"/>-->
+
+    <!--<menuitem name="Transactions" id="zeta_transit_menu_transaction" parent="zeta_transit_caisse"
+        action="zeta_transit_transaction_action_window"/>-->
+
+
+	<menuitem name="Clients" id="zeta_transit_menu_client" parent="zeta_transit_config"
+              action="base.action_partner_form"/>
+
+	<menuitem name="Dossier" id="zeta_transit_menu_dossier" parent="zeta_transit_menu"
+              action="zeta_transit_dossier_action_window"/>
+
+	<menuitem name="Minute" id="zeta_transit_menu_minute" parent="zeta_transit_menu"
+              action="zeta_transit_minute_action_window"/>
+
+    <menuitem name="Proforma" id="zeta_transit_menu_proforma" parent="zeta_transit_menu"
+              action="zeta_transit_proforma_action_window"/>
+
+    <menuitem name="Facture" id="zeta_transit_menu_facture" parent="zeta_transit_menu"
+              action="zeta_transit_facture_action_window"/>
+
+</odoo>

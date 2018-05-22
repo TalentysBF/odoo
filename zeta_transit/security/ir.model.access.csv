@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_zeta_trans_minute_assis,zeta.trans.minute,model_zeta_trans_minute,zeta_transit.group_zeta_trans_assistant,1,1,1,1
+access_zeta_trans_minute_admin,zeta.trans.minute,model_zeta_trans_minute,zeta_transit.group_zeta_trans_admin,1,1,1,1
+access_zeta_trans_minute_article_assis,zeta.trans.minute_article,model_zeta_trans_minute_article,zeta_transit.group_zeta_trans_admin,1,1,1,1
+access_zeta_trans_minute_article_admin,zeta.trans.minute_article,model_zeta_trans_minute_article,zeta_transit.group_zeta_trans_assistant,1,1,1,1
+access_zeta_trans_dossier_admin,zeta.trans.dossier,model_zeta_trans_dossier,zeta_transit.group_zeta_trans_admin,1,1,1,1
+access_zeta_trans_dossier_assist,zeta.trans.dossier,model_zeta_trans_dossier,zeta_transit.group_zeta_trans_assistant,1,1,1,1
+access_zeta_trans_facture,zeta.trans.facture,model_zeta_trans_facture,zeta_transit.group_zeta_trans_admin,1,1,1,1
+access_zeta_trans_proforma,zeta.trans.proforma,model_zeta_trans_proforma,zeta_transit.group_zeta_trans_admin,1,1,1,1
+access_zeta_trans_bureau,zeta.trans.bureau,model_zeta_trans_bureau,base.group_user,1,1,1,1

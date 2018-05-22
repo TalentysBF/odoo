@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+        <record id="seq_zeta_trans_dossier" model="ir.sequence">
+            <field name="name">Zeta Transit Dossier</field>
+            <field name="code">zeta.trans.dossier</field>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="seq_zeta_trans_minute" model="ir.sequence">
+            <field name="name">Zeta Transit Minute</field>
+            <field name="code">zeta.trans.minute</field>
+            <field name="prefix">MNN.</field>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="seq_zeta_trans_avance" model="ir.sequence">
+            <field name="name">Zeta Transit Avance</field>
+            <field name="code">zeta.trans.avance</field>
+            <field name="prefix">AVN.</field>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="seq_zeta_trans_proforma" model="ir.sequence">
+            <field name="name">Zeta Transit Proforma</field>
+            <field name="code">zeta.trans.proforma</field>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="seq_zeta_trans_facture" model="ir.sequence">
+            <field name="name">Zeta Transit Facture</field>
+            <field name="code">zeta.trans.facture</field>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="seq_zeta_trans_caisse" model="ir.sequence">
+            <field name="name">Zeta Transit Caisse</field>
+            <field name="code">zeta.trans.caisse</field>
+            <field name="prefix">C.</field>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="seq_zeta_trans_transaction" model="ir.sequence">
+            <field name="name">Zeta Transit Transaction</field>
+            <field name="code">zeta.trans.transaction</field>
+            <field name="prefix">TR.</field>
+            <field name="padding">4</field>
+        </record>
+
+</odoo>

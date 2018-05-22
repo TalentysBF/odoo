@@ -1,0 +1,67 @@
+<odoo>
+
+    <record id="zeta_transit_caisse_form_view" model="ir.ui.view">
+        <field name="name">zeta.trans.caisse.form.view</field>
+        <field name="model">zeta.trans.caisse.kanban</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="autheur"/>
+                        <field name="date"/>
+                        <field name="beneficiaire"/>
+                        <field name="n_dossier"/>
+                        <field name="type_mouvement"/>
+                        <field name="montant"/>
+                        <field name="solde" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="zeta_transit_caisse_kanban_tree" model="ir.ui.view">
+		<field name="name">Caisse Tree</field>
+		<field name="model">zeta.trans.caisse.kanban</field>
+		<field name="arch" type="xml">
+			<tree>
+               <field name="name"/>
+               <field name="autheur"/>
+               <field name="date"/>
+               <field name="beneficiaire"/>
+               <field name="n_dossier"/>
+               <field name="type_mouvement"/>
+               <field name="montant"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="zeta_transit_caisse_kanban_filter" model="ir.ui.view">
+		<field name="name">Caisse Filter</field>
+		<field name="model">zeta.trans.caisse.kanban</field>
+		<field name="arch" type="xml">
+			<search>
+               <field name="name"/>
+                <field name="autheur"/>
+                <field name="date"/>
+               <field name="beneficiaire"/>
+               <field name="n_dossier"/>
+               <field name="type_mouvement"/>
+               <field name="montant"/>
+			</search>
+		</field>
+	</record>
+
+    <record id="zeta_transit_caisse_kanban_form_action_window" model="ir.actions.act_window">
+        <field name="name">Caisse Form</field>
+        <field name="res_model">zeta.trans.caisse.kanban</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="zeta_transit_caisse_kanban_action_window" model="ir.actions.act_window">
+        <field name="name">Caisse Kanban</field>
+        <field name="res_model">zeta.trans.caisse.kanban</field>
+        <field name="view_mode">kanban</field>
+    </record>
+</odoo>
