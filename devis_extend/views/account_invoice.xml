@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="custom_account_invoice" model="ir.ui.view">
+        <field name="name">account.invoice.custom</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <field name="number" position="replace">
+                <field name="number" class="oe_inline"/>
+            </field>
+        </field>
+    </record>
+</odoo>
+
+<!--invoice_form-->
