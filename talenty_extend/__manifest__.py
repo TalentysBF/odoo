@@ -12,7 +12,8 @@
         'views/sale_order.xml',
         'views/crm_lead.xml',
         'report/sale_report_template.xml',
-        'report/account_invoice_report.xml'
+        'report/account_invoice_report.xml',
+        'report/purchase_template.xml'
     ],
     'installable': True,
     'application': True

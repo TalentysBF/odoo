@@ -84,9 +84,9 @@ class SaleOrderLine(models.Model):
                               required=True)
     prix_gpl_value = fields.Float(string='Prix GPL Value', required=False, default=1)
 
-    prix_gpl = fields.Integer(string='Prix Public (XOF)', required=False)
+    prix_gpl = fields.Float(string='Prix Public (XOF)', required=False)
     remise_fournisseur = fields.Float(
-        string="Remise Fr (%)", required=False, default=0.0)
+        string="Remise Frs (%)", required=False, default=0.0)
     remise_fournisseur_value = fields.Integer('Remise Fournisseur Value')
     marge = fields.Float(string="Marge (%)", required=False, default=0.0)
     marge_value = fields.Integer('Marge Value')
@@ -99,7 +99,7 @@ class SaleOrderLine(models.Model):
     first_msg = fields.Html(
         'Pricelist PDF',
         default="""
-        <embed src="http://micromut.fr/internet/Pdf/Mieux_utiliser_Google.pdf" type="application/pdf"   height="300px" width="100%">
+        <embed src="http://micromut.fr/internet/Pdf/Mieux_utiliser_Google.pdf" type="application/pdf"/>
         """, sanitize=False)
 
     state = fields.Selection([
@@ -163,6 +163,11 @@ class SaleOrder(models.Model):
     def action_rejected(self):
         self.write({'state': 'rejected'})
 
+    @api.depends('order_line')
+    def compute_local_taxes(self):
+        self.local_bic = self._get_tax_amount_by_type('BIC')
+        self.local_tva = self._get_tax_amount_by_type('TVA 18%')
+
     amount_total_letter = fields.Char('Montant total en lettre', required=False, compute='get_amount_letter')
 
     last_state = fields.Char('Last state')
@@ -174,6 +179,11 @@ class SaleOrder(models.Model):
     c_d_f = fields.Many2one('res.partner', 'Charges de fonctionnement')
     douane = fields.Many2one('res.partner', 'Douane')
 
+    local_tva = fields.Integer('TVA', compute='compute_local_taxes')
+    local_bic = fields.Integer('BIC', compute='compute_local_taxes')
+
+    piste = fields.Many2one('crm.lead', 'Deal', required=True)
+
     @api.multi
     def _get_tax_amount_by_type(self, types):
         self.ensure_one()
@@ -181,7 +191,7 @@ class SaleOrder(models.Model):
         if types:
             for res in result:
                 if res[0] == types:
-                    return res[1]
+                    return int(res[1])
         else:
             return 0
 
@@ -196,4 +206,5 @@ class SaleOrder(models.Model):
         ('done', 'Locked'),
         ('rejected', 'Rejeter'),
         ('cancel', 'Cancelled'),
-    ], string='Status', readonly=True, copy=False, index=True, track_visibility='onchange', default='draft')
+    ], string='Status', readonly=True, copy=False, index=True, track_visibility='onchange', default='draft'
+    )

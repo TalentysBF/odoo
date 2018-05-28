@@ -45,7 +45,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-2">Suivi par : </div>
-                <div class="col-xs-4"><strong><span t-field="doc.user_id"/></strong></div>
+                <div class="col-xs-4"><strong><span t-field="doc.commercial"/></strong></div>
                 <div class="col-xs-2">Tél : </div>
                 <div class="col-xs-4"><strong><span t-field="doc.partner_id.phone"/></strong></div>
             </div>
@@ -139,8 +139,8 @@
                             <td class="text-center">
                                 <span t-field="doc.amount_untaxed" t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
                             </td>
-                            <td class="text-center"><span t-esc="doc._get_tax_amount_by_type('Taxes')"/></td>
-                            <td class="text-center"><span t-esc="doc._get_tax_amount_by_type('BIC')"/></td>
+                            <td class="text-center"><span t-field="doc.local_tva" t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/></td>
+                            <td class="text-center"><span t-field="doc.local_bic" t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/></td>
                             <td class="text-center" style="background-color:#BDBDBD; text-align:center;">
                                 <strong><span t-field="doc.amount_total"
                                     t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>

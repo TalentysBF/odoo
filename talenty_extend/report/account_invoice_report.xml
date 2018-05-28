@@ -171,10 +171,9 @@
                                 <tbody style="border: 1px solid black;">
                                     <tr style="border: 1px solid black; text-align:center;">
                                         <td style="border: 1px solid black;"><span t-field="doc.amount_untaxed"/></td>
-                                        <td style="border: 1px solid black;"><span t-field="doc.amount_tax"/></td>
+                                        <td style="border: 1px solid black;"><span t-esc="doc._get_tax_amount_by_type('TVA 18%')"/></td>
                                         <td style="border: 1px solid black;"><span t-esc="doc._get_tax_amount_by_type('BIC')"/></td>
-                                        <td style="border: 1px solid black;"><span t-field="doc.amount_total"
-                                    t-options='{"widget": "monetary"}'/></td>
+                                        <td style="border: 1px solid black;"><span t-field="doc.amount_total" t-options='{"widget": "monetary"}'/></td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -2,6 +2,30 @@
 <openerp>
     <data>
 
+        <record id="sale.view_order_tree_custom" model="ir.ui.view">
+            <field name="name">sale.order.tree.custom</field>
+            <field name="model">sale.order</field>
+            <field name="priority">2</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="piste"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="sale_order_view_search_inherit_quotation_custom" model="ir.ui.view">
+            <field name="name">sale.order.search.inherit.quotation.custom</field>
+            <field name="model">sale.order</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                        <field name="piste"/>
+                </field>
+            </field>
+        </record>
+
         <record id="action_orders_to_invoice_boq" model="ir.actions.act_window">
             <field name="name">BOQ</field>
             <field name="type">ir.actions.act_window</field>
@@ -9,7 +33,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
             <field name="domain">[('state','=','draft')]</field>
-            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="search_view_id" ref="sale_order_view_search_inherit_quotation_custom"/>
         </record>
 
         <record id="action_orders_to_invoice_validate" model="ir.actions.act_window">
@@ -19,27 +43,27 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
             <field name="domain">[('state','=','validate')]</field>
-            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="search_view_id" ref="sale_order_view_search_inherit_quotation_custom"/>
         </record>
 
         <record id="action_orders_to_invoice_auto" model="ir.actions.act_window">
-            <field name="name">Devis Saisie</field>
+            <field name="name">Devis en attente de validation</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">sale.order</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
             <field name="domain">[('state','=','auto')]</field>
-            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="search_view_id" ref="sale_order_view_search_inherit_quotation_custom"/>
         </record>
 
         <record id="action_orders_to_invoice_waiting" model="ir.actions.act_window">
-            <field name="name">Devis En Attente De Validation</field>
+            <field name="name">Devis Validés En Attente D'Envoi</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">sale.order</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
             <field name="domain">[('state','=','waiting')]</field>
-            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="search_view_id" ref="sale_order_view_search_inherit_quotation_custom"/>
         </record>
 
         <record id="action_orders_to_invoice_sent" model="ir.actions.act_window">
@@ -49,7 +73,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
             <field name="domain">[('state','=','sent')]</field>
-            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="search_view_id" ref="sale_order_view_search_inherit_quotation_custom"/>
         </record>
 
         <record id="action_orders_to_invoice_archive" model="ir.actions.act_window">
@@ -59,7 +83,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
             <field name="domain">[('state','=','archive')]</field>
-            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="search_view_id" ref="sale_order_view_search_inherit_quotation_custom"/>
         </record>
 
         <record id="action_orders_to_invoice_rejected" model="ir.actions.act_window">
@@ -69,7 +93,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
             <field name="domain">[('state','=','rejected')]</field>
-            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="search_view_id" ref="sale_order_view_search_inherit_quotation_custom"/>
         </record>
 
          <menuitem id="menu_sale_order_boq"
@@ -85,13 +109,13 @@
             sequence="1"/>
 
          <menuitem id="menu_sale_order_auto"
-            name="Devis Saisie"
+            name="Devis En Attente De Validation"
             action="action_orders_to_invoice_auto"
             parent="sale.sale_order_menu"
             sequence="1"/>
 
         <menuitem id="menu_sale_order_waiting"
-            name="Devis En Attente De Validation"
+            name="Devis Validés En Attente D'Envoi"
             action="action_orders_to_invoice_waiting"
             parent="sale.sale_order_menu"
             sequence="1"/>
@@ -120,6 +144,9 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="piste"/>
+                </field>
                 <field name="partner_shipping_id" position="after">
                     <field name="avant_vente"/>
                     <field name="commercial"/>
@@ -183,7 +210,7 @@
                                     context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}"
                                     attrs="{'readonly': ['|', ('qty_invoiced', '&gt;', 0)]}"
                                    />
-                                <label for="product_uom_qty" string="Quantitée"/>
+                                <label for="product_uom_qty" string="Quantité"/>
                                 <div>
                                     <field
                                         context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'uom_qty_change':True, 'company_id': parent.company_id}"
@@ -238,10 +265,8 @@
                                 <field name="marge_value" string="Marge"/>
                                 <field name="price_unit" string="Prix de vente HT"/>
                             </group>
-                            <group>
-                                <field name="first_msg" widget="html" states="draft"/>
-                            </group>
                             <group></group>
+                            <field name="first_msg" widget="html" states="draft"/>
                         </group>
                         <label for="name"/>
                         <field name="name"/>
@@ -281,6 +306,10 @@
                         <field name="state" widget="statusbar" statusbar_visible="boq,draft,validate,auto,waiting,sent,sale,archive,rejected"/>
                     </header>
                 </xpath>
+                <field name="amount_tax" position="replace">
+                    <field name="local_tva"/>
+                    <field name="local_bic"/>
+                </field>
             </field>
         </record>
 

@@ -1,0 +1,4 @@
+#. module: purchase
+#: model:ir.ui.view,arch_db:purchase.report_purchaseorder_document
+msgid "Purchase Order Confirmation #"
+msgstr "Confirmation du Bon de commande #"
