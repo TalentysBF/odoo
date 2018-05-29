@@ -282,8 +282,8 @@
                         <button name="action_google" type="object"/>-->
                         <button name="action_validate" string="Devis" type="object" states="draft"/>
                         <button name="action_auto" string="Soumettre" type="object" states="validate,rejected"/>
-                        <button name="action_waiting" string="Approuver" type="object" states="auto"/>
-                        <button name="action_rejected" string="Rejeter" type="object" states="auto"/>
+                        <button name="action_waiting" string="Approuver" type="object" states="auto" groups="talenty_extend.group_talentys_extend_man"/>
+                        <button name="action_rejected" string="Rejeter" type="object" states="auto" groups="talenty_extend.group_talentys_extend_man"/>
                         <button name="action_quotation_send" string="Send by Email" type="object" states="waiting" class="btn-primary"/>
                         <button name="action_quotation_send" type="object" string="Send PRO-FORMA Invoice" groups="sale.group_proforma_sales" class="btn-primary" attrs="{'invisible': ['|', ('state', '!=', 'waiting'), ('invoice_count','&gt;=',1)]}" context="{'proforma': True}"/>
                         <button name="print_quotation" string="Print" type="object" states="waiting" class="btn-primary o_sale_print"/>

@@ -99,7 +99,8 @@ class SaleOrderLine(models.Model):
     first_msg = fields.Html(
         'Pricelist PDF',
         default="""
-        <embed src="http://micromut.fr/internet/Pdf/Mieux_utiliser_Google.pdf" type="application/pdf"/>
+        <embed src="http://micromut.fr/internet/Pdf/Mieux_utiliser_Google.pdf" type="application/pdf" height="300px"
+        width="100%"/>
         """, sanitize=False)
 
     state = fields.Selection([

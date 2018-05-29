@@ -13,7 +13,8 @@
         'views/crm_lead.xml',
         'report/sale_report_template.xml',
         'report/account_invoice_report.xml',
-        'report/purchase_template.xml'
+        'report/purchase_template.xml',
+        'security/talentys_extend.xml'
     ],
     'installable': True,
     'application': True

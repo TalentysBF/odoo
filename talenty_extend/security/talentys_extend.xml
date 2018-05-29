@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record model="ir.module.category" id="module_category_talentys_extend">
+            <field name="name">Talentys Extend</field>
+            <field name="parent_id" ref="base.module_category_purchase_management"/>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="group_talentys_extend_com" model="res.groups">
+            <field name="name">Commercial</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_category_talentys_extend"/>
+        </record>
+
+        <record id="group_talentys_extend_av" model="res.groups">
+            <field name="name">Avant vente</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_category_talentys_extend"/>
+        </record>
+
+        <record id="group_talentys_extend_man" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_category_talentys_extend"/>
+        </record>
+
+    </data>
+</odoo>
