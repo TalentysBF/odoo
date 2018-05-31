@@ -32,7 +32,6 @@
                 <div class="col-xs-4"><strong><span t-field="doc.date_order"/></strong></div>
                 <div class="col-xs-2">Client final :</div>
                 <div class="col-xs-4"> <strong><span t-field="doc.partner_id"/></strong></div>
-
             </div>
             <div class="row">
                 <div class="col-xs-2">

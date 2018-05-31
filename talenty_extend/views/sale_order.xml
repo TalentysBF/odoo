@@ -10,6 +10,8 @@
             <field name="arch" type="xml">
                 <field name="name" position="after">
                     <field name="piste"/>
+                    <field name="local_marge"/>
+                    <field name="local_frai"/>
                 </field>
             </field>
         </record>
@@ -21,7 +23,9 @@
             <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
             <field name="arch" type="xml">
                 <field name="name" position="after">
-                        <field name="piste"/>
+                    <field name="piste"/>
+                    <field name="local_marge"/>
+                    <field name="local_frai"/>
                 </field>
             </field>
         </record>
@@ -96,6 +100,16 @@
             <field name="search_view_id" ref="sale_order_view_search_inherit_quotation_custom"/>
         </record>
 
+        <record id="action_orders_to_invoice_sales" model="ir.actions.act_window">
+            <field name="name">Deals Gagnés</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
+            <field name="domain">[('state','=','sale')]</field>
+            <field name="search_view_id" ref="sale_order_view_search_inherit_quotation_custom"/>
+        </record>
+
          <menuitem id="menu_sale_order_boq"
             name="BOQ"
             action="action_orders_to_invoice_boq"
@@ -135,6 +149,12 @@
         <menuitem id="menu_sale_order_rejected"
             name="Devis Rejetés"
             action="action_orders_to_invoice_rejected"
+            parent="sale.sale_order_menu"
+            sequence="1"/>
+
+        <menuitem id="menu_sale_order_sales"
+            name="Deals Gagnés"
+            action="action_orders_to_invoice_sales"
             parent="sale.sale_order_menu"
             sequence="1"/>
 
@@ -309,6 +329,8 @@
                 <field name="amount_tax" position="replace">
                     <field name="local_tva"/>
                     <field name="local_bic"/>
+                    <field name="local_marge"/>
+                    <field name="local_frai"/>
                 </field>
             </field>
         </record>

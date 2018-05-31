@@ -1,10 +1,249 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <template id="report_invoice_document">
+    <t t-call="web.external_layout">
+        <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})" />
+        <div class="page">
+            <style type="text/css">
+
+                .sale_tbody td {
+                    border: 0.5px solid black;
+                    padding: 5px;
+                }
+
+                .sale_line th {
+                    padding: 5px;
+                }
+
+                .amount_table td{
+                    border: 0.5 solid black;
+                    padding: 5px;
+                }
+
+                .summary td{
+                    padding: 5px;
+                }
+            </style>
+            <div class="oe_structure"/>
+            <div style="border: 1px solid black;">
+            <div class="row">
+                <div class="col-xs-2">Date :</div>
+                <div class="col-xs-4"><strong><span t-field="doc.date_invoice"/></strong></div>
+                <div class="col-xs-2">Client final :</div>
+                <div class="col-xs-4"> <strong><span t-field="doc.partner_id"/></strong></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2">
+                    <span t-if="doc.type_facture == 'normal' and (doc.state in ('open', 'paid', 'draft'))">Facture : </span>
+                    <span t-if="doc.type_facture == 'solde'  and (doc.state in ('open', 'paid', 'draft'))">Facture de solde : </span>
+                    <span t-if="doc.type_facture == 'acompte' and (doc.state in ('open', 'paid', 'draft'))">Facture d'acompte : </span>
+                    <span t-if="doc.type_facture == 'avoir' and (doc.state in ('open', 'paid', 'draft'))">Facture d'avoir : </span>
+                    <span t-if="doc.type_facture == 'exoneration' and (doc.state in ('open', 'paid', 'draft'))">Facture : </span>
+                </div>
+                <div class="col-xs-4"><strong>
+                    <span t-field="doc.number"/>
+                </strong></div>
+                <div class="col-xs-2">Pays : </div>
+                <div class="col-xs-4"><strong><span t-field="doc.partner_id.country_id"/></strong></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-4"></div>
+                <div class="col-xs-2">Tél : </div>
+                <div class="col-xs-4"><strong><span t-field="doc.partner_id.phone"/></strong></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"></div>
+                <div class="col-xs-2">Addresse : </div>
+                <div class="col-xs-4"><strong><span t-field="doc.partner_id.street"/></strong></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"></div>
+                <div class="col-xs-2">RCCM : </div>
+                <div class="col-xs-4"><strong><span t-field="doc.partner_id.rccm"/></strong></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"></div>
+                <div class="col-xs-2">IFU : </div>
+                <div class="col-xs-4"><strong><span t-field="doc.partner_id.ifu"/></strong></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"></div>
+                <div class="col-xs-3">Régime d'imposition / Division fiscale : </div>
+                <div class="col-xs-3"><strong><span t-field="doc.partner_id.r_i"/> / <span t-field="doc.partner_id.d_f"/></strong></div>
+            </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <table class="sale_line" style="font-size:12px;width:100%;border: 1px solid white;">
+                <thead>
+                    <tr style="background-color:#848484;">
+                        <th class="text-center" style="white-space: nowrap">Part number</th>
+                        <th class="text-center">Designation</th>
+                        <th class="text-center">Qté</th>
+                        <th class="text-center">Prix Unit.</th>
+                        <th class="text-center" groups="sale.group_discount_per_so_line">Rem.</th>
+                        <th class="text-center" groups="sale.group_show_price_subtotal">Mt Total</th>
+                    </tr>
+               </thead>
+                <tbody class="sale_tbody" style="border: 1px solid white;">
+                    <t t-foreach="doc.order_lines_layouted()" t-as="page">
+                        <t t-foreach="page" t-as="layout_category">
+
+                            <tr style="border: 1px solid white;">
+                                <td style="border: 1px solid white;"></td>
+                                <td style="font-weight: bold; background-color:#BDBDBD">
+                                    <t t-esc="layout_category['name']"/>
+                                </td>
+                                <td style="border: 1px solid white;"></td>
+                                <td style="border: 1px solid white;"></td>
+                                <td style="border: 1px solid white;"></td>
+                                <td style="border: 1px solid white;"></td>
+                            </tr>
+                            <!-- Lines associated -->
+                            <t t-foreach="layout_category['lines']" t-as="l">
+                                <tr style="border: 1px solid white;">
+                                    <td style="border: 1px solid white;"><span t-field="l.product_id.default_code"/></td>
+                                    <td style="border: 1px solid white;"><span t-field="l.product_id.name"/></td>
+                                    <td style="border: 1px solid white;" class="text-right"><span t-field="l.quantity"/></td>
+                                    <td style="border: 1px solid white;" class="text-right"><span t-field="l.price_unit" /></td>
+                                    <td style="border: 1px solid white;" class="text-right" groups="sale.group_discount_per_so_line">
+                                          <t t-if="l.discount">
+                                              <span t-field="l.discount"/>
+                                          </t>
+                                          <t t-if="l.discount == 0">
+                                              <span>-</span>
+                                          </t>
+                                    </td>
+                                    <td class="text-right" groups="sale.group_show_price_subtotal"><span t-field="l.price_subtotal"
+                                            t-options='{"widget": "monetary"}'/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </t>
+                    <tr style="border: 1px solid white;">
+                        <td colspan="3" style="border-style:none;"></td>
+                        <td colspan="2" class="active" style="background-color:#BDBDBD; text-align:center;">Total HT</td>
+                        <td class="active text-right" style="background-color:#BDBDBD; text-align:center;">
+                            <span t-field="doc.amount_untaxed" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br/>
+
+            <div class="row" name="total" align="center" style="font-size:12px">
+                <div class="col-xs-offset-2 col-xs-8 pull-center">
+                    <table class="amount_table" style="font-size:12px;width:100%;">
+                        <tr class="border-black">
+                            <td class="text-center"><strong>Montant HT</strong></td>
+                            <td class="text-center"><strong>TVA 18%</strong></td>
+                            <td class="text-center"><strong>Avance sur le BIC (2%)</strong></td>
+                            <td class="text-center active"><strong>Montant TTC</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <span t-field="doc.amount_untaxed" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                            </td>
+                            <td class="text-center"><span t-field="doc.local_tva" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                            <td class="text-center"><span t-field="doc.local_bic" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                            <td class="text-center" style="background-color:#BDBDBD; text-align:center;">
+                                <strong><span t-field="doc.amount_total"
+                                    t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                </strong>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+
+            <br/>
+
+            <div class="row" style="font-size:12px">
+                <div class="col-xs-12">
+                    <strong>La présente facture Proforma est arrétée au montant de <span t-field="doc.amount_total_letter"/></strong>
+                </div>
+            </div>
+            <br/>
+            <div  style="font-size:12px">
+                <div class="pull-left" style="border: 1px solid white">
+                    <table class="summary">
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="background-color:#BDBDBD;text-align:center;width:350px;border:1px solid black;padding:5px">
+                                    <strong>CONDITIONS DE VENTE</strong>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Méthode de paiement :</strong></td>
+                                <td>Chèque ou virement</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Conditions de paiement:</strong></td>
+                                <td><span t-field="doc.payment_term_id"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lieu de livraison :</strong></td>
+                                <td><span t-field="doc.partner_shipping_id"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Validité de l'offre :</strong></td>
+                                <td>30 jours</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Garantie constructeur :</strong></td>
+                                <td>1 an retour atelier</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pull-right" style="border: 1px solid white;width:280px;">
+                    <div align="center">
+                        <strong><u>Executive Manager</u></strong>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+            <div class="oe_structure"/>
+        </div>
+    </t>
+</template>
+
+
+    <template id="report_invoice_custom">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="talenty_extend.report_invoice_document" t-lang="doc.partner_id.lang"/>
+                </t>
+            </t>
+    </template>
+
+    <report
+            id="account_invoices_custom"
+            model="account.invoice"
+            string="Facture TALENTYS"
+            report_type="qweb-pdf"
+            name="talenty_extend.report_invoice_custom"
+            file="talenty_extend.report_invoice_custom"
+            print_report_name="'Facture TALENTYS'"
+        />
+</odoo>
+
+
+
+<!--
+<odoo>
     <template id="report_invoice_document">
         <t t-call="web.external_layout">
                 <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})" />
                 <div class="page" style="font-size: 12px">
-
+                    <div class="oe_structure"/>
                     <div class="row" style="width: 2%; padding:2%"></div>
 
                     <div class="row">
@@ -20,61 +259,67 @@
                             </h4>
                             <br></br>
                         </div>
-
                     </div>
-                    <div>
-                        <table style="border:none; width: 100%; font-weight: bold;">
-                            <tr >
-                                <td>Date</td>
-                                <td><span t-esc="time.strftime('%d/%m/%Y')"/></td>
-                                <td>Client final :</td>
-                                <td style="color:#81BEF7;"><span t-field="doc.partner_id"/></td>
-                            </tr>
-                            <tr >
-                                <td>Description de l'offre :</td>
-                                <td></td>
-                                <td>Adresse géographique :</td>
-                                <td style="color:#81BEF7;"><span t-field="doc.partner_id.street"/>, <span t-field="doc.partner_id.street2"/></td>
-                            </tr>
-                            <tr >
-                                <td>Date de la commande :</td>
-                                <td><span t-field="doc.date_invoice"/></td>
-                                <td>Tél :</td>
-                                <td style="color:#81BEF7;"><span t-field="doc.partner_id.phone"/></td>
-                            </tr>
-                            <tr >
-                                <td colspan="2"></td>
-                                <td>Adresse postale :</td>
-                                <td style="color:#81BEF7;"><span t-field="doc.partner_id.zip"/></td>
-                            </tr>
-                            <tr >
-                                <td colspan="2"></td>
-                                <td>N° IFU :</td>
-                                <td><span t-field="doc.partner_id.ifu"/></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"></td>
-                                <td>RCCM :</td>
-                                <td style="color:#81BEF7;"><span t-field="doc.partner_id.rccm"/></td>
-                            </tr>
-                            <tr >
-                                <td colspan="2"></td>
-                                <td>Division fiscale :</td>
-                                <td style="color:#81BEF7;"><span t-field="doc.partner_id.d_f"/></td>
-                            </tr>
-                            <tr >
-                                <td colspan="2"></td>
-                                <td>Adresse cadastrale :</td>
-                                <td style="color:#81BEF7;"><span t-field="doc.partner_id.adresse_cadastrale"/></td>
-                            </tr>
+                    <div class="row">
+                        <table class="table table-condensed" style="border:none; table-layout: fixed;">
+                            <tbody>
+                                <tr>
+                                    <td style="width: 33%;">Date</td>
+                                    <td style="width: 33%;"><span t-esc="time.strftime('%d/%m/%Y')"/></td>
+                                    <td style="width: 33%;">Client final :</td>
+                                    <td style="width: 33%;"><span t-field="doc.partner_id"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 33%;">Description de l'offre :</td>
+                                    <td style="width: 33%;"></td>
+                                    <td style="width: 33%;">Adresse géographique :</td>
+                                    <td style="width: 33%;"><span t-field="doc.partner_id.street"/>, <span t-field="doc.partner_id.street2"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 33%;">Date de la commande :</td>
+                                    <td style="width: 33%;"><span t-field="doc.date_invoice"/></td>
+                                    <td style="width: 33%;">Tél :</td>
+                                    <td style="width: 33%;"><span t-field="doc.partner_id.phone"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td>Adresse postale :</td>
+                                    <td><span t-field="doc.partner_id.zip"/></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td>N° IFU :</td>
+                                    <td><span t-field="doc.partner_id.ifu"/></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td>RCCM :</td>
+                                    <td><span t-field="doc.partner_id.rccm"/></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td>Division fiscale :</td>
+                                    <td><span t-field="doc.partner_id.d_f"/></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td>Adresse cadastrale :</td>
+                                    <td><span t-field="doc.partner_id.adresse_cadastrale"/></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
 
                     <br></br>
 
-                    <!-- Is there a discount on at least one line? -->
+                    <!- Is there a discount on at least one line? ->
                     <t t-set="display_discount" t-value="any([l.discount for l in doc.invoice_line_ids])"/>
-                    <!--Group product by categ_id-->
+                    <!-Group product by categ_id->
                     <t t-set="product_category" t-value="[]"/>
                     <t t-foreach="doc.invoice_line_ids" t-as="l">
                         <t t-set="product_category" t-value="product_category+[l.product_id.categ_id]"/>
@@ -184,7 +429,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <p>
-                                <strong>La présente facture Proforma est arrétée au montant de </strong>
+                                <strong>La présente facture Proforma est arrétée au montant de <span t-field="doc.amount_total_letter"/></strong>
                             </p>
                         </div>
 
@@ -230,22 +475,6 @@
             </t>
     </template>
 
-    <template id="report_invoice_custom">
-            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="doc">
-                    <t t-call="talenty_extend.report_invoice_document" t-lang="doc.partner_id.lang"/>
-                </t>
-            </t>
-    </template>
-
-    <report
-            id="account_invoices_custom"
-            model="account.invoice"
-            string="Facture TALENTYS"
-            report_type="qweb-pdf"
-            name="talenty_extend.report_invoice_custom"
-            file="talenty_extend.report_invoice_custom"
-            print_report_name="'Facture Custom'"
-        />
 
 </odoo>
+-->

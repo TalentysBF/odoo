@@ -30,14 +30,11 @@ class AccountInvoice(models.Model):
                 total += temp
         return total
 
-    @api.multi
     @api.depends('amount_total')
-    def _get_amount_total_to_letter(self):
-        self.ensure_one()
-        amount_total_letter = ''
+    def get_amount_letter(self):
         if self.amount_total:
-            amount_total_letter = Number_To_Word.Number_To_Word(self.amount_total, 'fr', self.currency_id.symbol, '')
-        return amount_total_letter
+            amount_letter = Number_To_Word.Number_To_Word(self.amount_total, 'fr', 'Francs CFA', '')
+            self.amount_total_letter = amount_letter
 
     @api.multi
     @api.depends('saleOrder_id')
@@ -47,13 +44,14 @@ class AccountInvoice(models.Model):
         if self.saleOrder_id and self.type_facture not in ('normal', 'avoir'):
             return 0.0
 
+    amount_total_letter = fields.Char('Montant total en lettre', required=False, compute='get_amount_letter')
+
     saleOrder_id = fields.Many2one('sale.order', 'Vente', required=False, store=False, compute=_getSaleOrder)
-    type_facture = fields.Selection([('acompte', 'Acompte'), ('acompte_exo', 'Acompte exonéré'), ('solde', 'Solde 1'),
-                                     ('solde2', 'Solde 2'), ('solde_exo', 'Solde exonéré'),
-                                     ('exoneration', 'Exonération de taxe'), ('avoir', 'Avoir'),
-                                     ('normal', 'Normal')], 'Type', index=True, readonly=False)
+    type_facture = fields.Selection([('acompte', 'Acompte'), ('solde', 'Solde'), ('exoneration', 'Exonération de taxe'),
+                                     ('avoir', 'Avoir'), ('normal', 'Normal')], 'Type', index=True, required=True,
+                                     readonly=False)
     mode_paiement = fields.Selection([('cheque', 'Chèque'), ('espece', 'Espèce'), ('virement', 'Virement')],
-                                     'Mode de paiement', index=True, readonly=False)
+                                     'Mode de paiement', index=True, readonly=False, required=True, default='')
     taux_amount = fields.Float('Taux montant', compute=_computeSaleOrder, store=False, digits=(10, 2))
 
     @api.multi
@@ -66,6 +64,14 @@ class AccountInvoice(models.Model):
                     return res[1]
         else:
             return 0
+
+    @api.depends('invoice_line_ids')
+    def compute_local_taxes(self):
+        self.local_bic = self._get_tax_amount_by_type('BIC')
+        self.local_tva = self._get_tax_amount_by_type('TVA 18%')
+
+    local_tva = fields.Integer('TVA', compute='compute_local_taxes')
+    local_bic = fields.Integer('BIC', compute='compute_local_taxes')
 
 
 class AccountInvoiceLine(models.Model):

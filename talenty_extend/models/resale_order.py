@@ -50,7 +50,8 @@ class SaleOrderLine(models.Model):
         self.update(vals)
         return result
 
-    @api.onchange('prix_gpl', 'remise_fournisseur', 'marge', 'frais_approche', 'product_uom_qty', 'prix_gpl_real', 'prix_gpl_value')
+    @api.onchange('prix_gpl', 'remise_fournisseur', 'marge', 'frais_approche', 'product_uom_qty', 'prix_gpl_real',
+                  'prix_gpl_value')
     def _get_price_unit(self):
         self.prix_gpl = self.prix_gpl_real * self.prix_gpl_value
         value = self.prix_gpl
@@ -77,7 +78,7 @@ class SaleOrderLine(models.Model):
         self.devise = self.f_currency
 
     f_currency = fields.Selection([('xof', 'XOF'), ('euro', 'EUR'), ('dollar', 'USD'), ('aed', 'AED')], 'Devise',
-                                   default='xof', required=True)
+                                  default='xof', required=True)
 
     prix_gpl_real = fields.Float(string='Prix Public en devise', required=False)
     devise = fields.Selection([('xof', 'XOF'), ('euro', 'EUR'), ('dollar', 'USD'), ('aed', 'AED')], default='xof',
@@ -119,14 +120,14 @@ class SaleOrderLine(models.Model):
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-#    @api.multi
-#    def action_google(self):
-#        self.ensure_one()
-#        return {
-#            'type': 'ir.actions.act_url',
-#            'url': 'http://www.google.com',
-#            'target': 'new',
-#        }
+    #    @api.multi
+    #    def action_google(self):
+    #        self.ensure_one()
+    #        return {
+    #            'type': 'ir.actions.act_url',
+    #            'url': 'http://www.google.com',
+    #            'target': 'new',
+    #        }
 
     @api.multi
     def print_quotation(self):
@@ -166,8 +167,16 @@ class SaleOrder(models.Model):
 
     @api.depends('order_line')
     def compute_local_taxes(self):
-        self.local_bic = self._get_tax_amount_by_type('BIC')
-        self.local_tva = self._get_tax_amount_by_type('TVA 18%')
+        for local in self:
+            local.local_bic = local._get_tax_amount_by_type('BIC')
+            local.local_tva = local._get_tax_amount_by_type('TVA 18%')
+            marge = 0
+            frai = 0
+            for line in local.order_line:
+                marge += (line.marge_value * line.product_uom_qty)
+                frai += (line.frais_approche_value * line.product_uom_qty)
+            local.local_frai = frai
+            local.local_marge = marge
 
     amount_total_letter = fields.Char('Montant total en lettre', required=False, compute='get_amount_letter')
 
@@ -182,12 +191,13 @@ class SaleOrder(models.Model):
 
     local_tva = fields.Integer('TVA', compute='compute_local_taxes')
     local_bic = fields.Integer('BIC', compute='compute_local_taxes')
+    local_marge = fields.Integer('Marge', compute='compute_local_taxes')
+    local_frai = fields.Integer('Frais d\'approche', compute='compute_local_taxes')
 
     piste = fields.Many2one('crm.lead', 'Deal', required=True)
 
     @api.multi
     def _get_tax_amount_by_type(self, types):
-        self.ensure_one()
         result = self._get_tax_amount_by_group()
         if types:
             for res in result:
