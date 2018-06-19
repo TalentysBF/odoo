@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_purchase_request_form_view" model="ir.ui.view">
+        <field name="name">purchase.purchase.request.form.view</field>
+        <field name="model">purchase.purchase.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header><!--
+                    <button name="action_confirmed" string="Soumettre" type="object" states="draft" />
+                    <button name="action_service" string="Transmettre au chef de departement" states="service" type="object"/>
+                    <button name="action_department" string="Transmettre au Resp. Finance" states="departement" type="object"/>
+                    <button name="action_finance" string="Valider" states="finance" type="object"/>
+                    <button name="action_dg" string="Valider" states="direction" type="object"/>
+                    <button name="action_retour_finance" string="Valider" type="object" states="ret_finance"/>
+                    <button name="%(action_payment_cash_form)d" string="Valider" type="action" states="caisse"/>
+                    <button name="action_responsable_achat" string="Valider" states="achat" type="object"/>
+                    <button name="action_draft" string="Annuler" type="object"/>-->
+                    <button name="action_admin" string="Soumetre" states="draft" type="object"/>
+                    <button name="action_compta" string="Approuver" states="admin" type="object"/>
+                    <button name="action_reject" string="Rejeter" states="admin" type="object"/>
+                    <button name="action_payment" string="Payer" states="compta" type="object"/>
+                    <button name="%(action_payment_cash_form)d" string="Valider" type="action"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,admin"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label string="Demande d'achat"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group col="4" colspan="4">
+                        <field name="type_demande"/>
+                        <field name="date"/>
+                        <field name="account_id" invisible="1"/>
+                        <field name="account_move_id" invisible="1"/>
+                        <field name="besoin_id" invisible="1"/>
+                        <field name="user_id"/>
+                        <field name="supplier_id"/>
+                        <field name="notif" invisible="1"/>
+                        <field name="listPrice_id"/>
+                        <field name="demandeur_id" invisible="1"/>
+                    </group>
+                    <group colspan="4" string="Commentaire Finance">
+                        <field name="notes_finances" nolabel="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Details de la demande d'achat" name="details_lines">
+                            <field name="line_ids" editable="top">
+                                <tree string="Lignes" name="line_lines">
+                                    <field name="product_id"/>
+                                    <field name="requested_qty"/>
+                                    <field name="available_qty"/>
+                                    <field name="supplier_id"/>
+                                    <field name="account_id"/>
+                                    <field name="taxes_id" widget="many2many_tags"/>
+                                    <field name="price_unit"/>
+                                    <field  name="discount"/>
+                                    <field name="price_subtotal"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="description_line"/>
+                                            <field name="raison_demande"/>
+                                        </group>
+                                        <group>
+                                            <field name="note"/>
+                                            <field name="requested_qty"/>
+                                            <field name="supplier_id"/>
+                                        </group>
+                                        <group>
+                                            <field name="department_id"/>
+                                            <field name="date_livraison_souhaitee"/>
+                                        </group>
+                                        <group>
+                                            <field name="currency_id"/>
+                                            <field name="price_unit"/>
+                                            <field name="discount"/>
+                                        </group>
+                                        <group>
+                                            <field name="price_subtotal"/>
+                                            <field name="price_tax"/>
+                                            <field name="price_total"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <div class="oe_subtotal_footer_separator oe_inline">
+                                    <label for="amount_total"/>
+                                </div>
+                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                        </page>
+                        <page string="Justification">
+                            <field name="notes" nolabel="1" placeholder="La présente demande s'inscrit dans le cadre de ..."/>
+                        </page>
+                        <page string="Achat/Vente">
+                            <group>
+                                <group>
+                                    <field name="supplier_ids" widget="many2many_tags" options="{'no_create_edit': True }"/>
+                                </group>
+                                <group>
+                                    <field name="sale_order_id" options="{'no_create_edit': True }"/>
+                                    <field name="customer_id" options="{'no_create_edit': True }"/>
+                                </group>
+                                <group>
+                                    <field name="projet"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                    <group string="Commentaires" name="comments">
+                        <field name="comment_ids" nolabel="1">
+                            <tree>
+                                <field name="date"/>
+                                <field name="user_id"/>
+                                <field name="commentaire"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="purchase_purchase_request_tree_view" model="ir.ui.view">
+        <field name="name">purchase.purchase.request.tree.view</field>
+        <field name="model">purchase.purchase.request</field>
+        <field name="arch" type="xml">
+            <tree string="Liste des demandes d'achat">
+                <field name="name"/>
+                <field name="type_demande"/>
+                <field name="user_id"/>
+                <field name="amount_total"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_purchase_purchase_request_view">
+        <field name="name">Demande d'achat</field>
+        <field name="res_model">purchase.purchase.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="purchase_purchase_request_tree_view"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_purchase_purchase_request_view_general">
+        <field name="name">Demande d'achat A soumettre</field>
+        <field name="res_model">purchase.purchase.request</field>
+        <field name="view_type">form</field>
+        <field name="domain">[('state','=','draft')]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="purchase_purchase_request_tree_view"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_purchase_purchase_request_view_admin">
+        <field name="name">Demande d'achat Administration</field>
+        <field name="res_model">purchase.purchase.request</field>
+        <field name="view_type">form</field>
+        <field name="domain">[('state','=','admin')]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="purchase_purchase_request_tree_view"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_purchase_purchase_request_view_compta">
+        <field name="name">Demande d'achat Comptabilite</field>
+        <field name="res_model">purchase.purchase.request</field>
+        <field name="view_type">form</field>
+        <field name="domain">[('state','=','compta')]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="purchase_purchase_request_tree_view"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_purchase_purchase_request_view_reject">
+        <field name="name">Demande d'achat Rejetés</field>
+        <field name="res_model">purchase.purchase.request</field>
+        <field name="view_type">form</field>
+        <field name="domain">[('state','=','reject')]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="purchase_purchase_request_tree_view"/>
+    </record>
+
+
+    <record id="action_purchase_request1" model="ir.actions.act_window">
+        <field name="name">Demandes d'achat</field>
+        <field name="res_model">purchase.purchase.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field eval="False" name="view_id"/>
+    </record>
+
+
+    <menuitem id="purchase_purchase_request_menu_start" name="Demande D'achat"/>
+
+    <menuitem id="purchase_purchase_request_menu" name="Demande D'achat" parent="purchase_purchase_request_menu_start"/>
+    <menuitem id="purchase_purchase_request_menu_conf" name="Admin et compta" parent="purchase_purchase_request_menu_start"/>
+
+    <menuitem id="purchase_purchase_request_menu_general" name="Demande D'achat General"
+        action="action_purchase_purchase_request_view_general"
+        parent="purchase_purchase_request_menu"/>
+
+    <menuitem id="purchase_purchase_request_menu_admin" name="Demande D'achat Administration"
+        action="action_purchase_purchase_request_view_admin"
+        parent="purchase_purchase_request_menu_conf" />
+
+    <menuitem id="purchase_purchase_request_menu_compta" name="Demande D'achat Validés"
+        action="action_purchase_purchase_request_view_compta"
+        parent="purchase_purchase_request_menu_conf" />
+
+    <menuitem id="purchase_purchase_request_menu_reject" name="Demande D'achat Rejetés"
+        action="action_purchase_purchase_request_view_reject"
+        parent="purchase_purchase_request_menu" />
+
+</odoo>
