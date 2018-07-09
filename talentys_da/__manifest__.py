@@ -10,7 +10,9 @@
         'views/payment_cash.xml',
         'views/demande_achat.xml',
         'views/res_user.xml',
-        'data/sequence.xml'
+        'data/sequence.xml',
+        'security/ir.model.access.csv',
+        'security/talentys_da.xml'
     ],
     'installable': True,
     'application': True

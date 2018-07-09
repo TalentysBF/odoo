@@ -181,6 +181,15 @@
         <field name="view_id" ref="purchase_purchase_request_tree_view"/>
     </record>
 
+    <record model="ir.actions.act_window" id="action_purchase_purchase_request_view_supp">
+        <field name="name">Demande d'achat Superviseur</field>
+        <field name="res_model">purchase.purchase.request</field>
+        <field name="view_type">form</field>
+        <field name="domain">[('state','=','supp')]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="purchase_purchase_request_tree_view"/>
+    </record>
+
     <record model="ir.actions.act_window" id="action_purchase_purchase_request_view_reject">
         <field name="name">Demande d'achat Rejetés</field>
         <field name="res_model">purchase.purchase.request</field>
@@ -190,6 +199,14 @@
         <field name="view_id" ref="purchase_purchase_request_tree_view"/>
     </record>
 
+    <record model="ir.actions.act_window" id="action_purchase_purchase_request_view_accept">
+        <field name="name">Demande d'achat Approuver</field>
+        <field name="res_model">purchase.purchase.request</field>
+        <field name="view_type">form</field>
+        <field name="domain">[('state','=','done')]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="purchase_purchase_request_tree_view"/>
+    </record>
 
     <record id="action_purchase_request1" model="ir.actions.act_window">
         <field name="name">Demandes d'achat</field>
@@ -205,7 +222,7 @@
     <menuitem id="purchase_purchase_request_menu" name="Demande D'achat" parent="purchase_purchase_request_menu_start"/>
     <menuitem id="purchase_purchase_request_menu_conf" name="Admin et compta" parent="purchase_purchase_request_menu_start"/>
 
-    <menuitem id="purchase_purchase_request_menu_general" name="Demande D'achat General"
+    <menuitem id="purchase_purchase_request_menu_general" name="Demande D'achat A Soumettre"
         action="action_purchase_purchase_request_view_general"
         parent="purchase_purchase_request_menu"/>
 
@@ -217,8 +234,16 @@
         action="action_purchase_purchase_request_view_compta"
         parent="purchase_purchase_request_menu_conf" />
 
+    <menuitem id="purchase_purchase_request_menu_supp" name="Demande D'achat Superieur"
+        action="action_purchase_purchase_request_view_supp"
+        parent="purchase_purchase_request_menu_conf" />
+
     <menuitem id="purchase_purchase_request_menu_reject" name="Demande D'achat Rejetés"
         action="action_purchase_purchase_request_view_reject"
+        parent="purchase_purchase_request_menu" />
+
+    <menuitem id="purchase_purchase_request_menu_accept" name="Demande D'achat Approuvés"
+        action="action_purchase_purchase_request_view_accept"
         parent="purchase_purchase_request_menu" />
 
 </odoo>

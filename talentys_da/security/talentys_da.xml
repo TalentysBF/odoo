@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record model="ir.module.category" id="module_category_talentys_da">
+            <field name="name">Talentys DA</field>
+            <field name="parent_id" ref="base.module_category_purchase_management"/>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="group_talentys_da_admin" model="res.groups">
+            <field name="name">Talentys DA Executive manager</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_category_talentys_da"/>
+        </record>
+
+        <record id="group_talentys_da_superieur" model="res.groups">
+            <field name="name">Talentys DA Superviseur</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_category_talentys_da"/>
+        </record>
+
+        <record id="group_talentys_da_compta" model="res.groups">
+            <field name="name">Talentys DA Administrateur Financier</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_category_talentys_da"/>
+        </record>
+
+    </data>
+</odoo>

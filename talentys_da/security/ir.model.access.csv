@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_talentys_da,purchase.purchase.request,model_purchase_purchase_request,base.group_user,1,1,1,1
+access_talentys_da_line,purchase.purchase.request.line,model_purchase_purchase_request_line,base.group_user,1,1,1,1
+access_talentys_da_comment,purchase.purchase.request.comment,model_purchase_purchase_request_comment,base.group_user,1,1,1,1

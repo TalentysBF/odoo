@@ -46,7 +46,7 @@ class RequestPurchase(models.Model):
     #                          ('done', 'Terminé')], 'Statut', required=True, states={'done': [('readonly', True)]},
     #                         default='draft')
 
-    state = fields.Selection([('draft', 'brouillon'), ('admin', 'Admin'), ('compta', 'Compta'),
+    state = fields.Selection([('draft', 'brouillon'), ('supp', 'Superieur'), ('compta', 'Compta'), ('admin', 'Admin'),
                               ('reject', 'Reject'), ('done', 'Done')], default='draft')
     listPrice_id = fields.Many2one('product.pricelist', 'Liste de prix', required=True)
     date = fields.Date('Date', required=False)
@@ -100,6 +100,10 @@ class RequestPurchase(models.Model):
             employee = self.env['hr.employee'].search([('user_id', '=', user_id.id)])
             if employee:
                 return employee
+
+    @api.one
+    def action_supp(self):
+        self.state = 'supp'
 
     @api.one
     def action_admin(self):
