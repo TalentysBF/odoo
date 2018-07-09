@@ -6,5 +6,5 @@
             <field name="code">talentys_caisse</field>
             <field name="prefix">TRANS.N.</field>
             <field name="padding">4</field>
-        </record >
+        </record>
 </odoo>
