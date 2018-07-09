@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.tools import Number_To_Word
+from odoo.exceptions import UserError
 import math
 
 _STATES = [
     ('draft', 'Brouillon'),
-    ('paid', 'Payer')
+    ('paid', 'Payer'),
+    ('avoir', 'Avoir')
 ]
 
 class ZetaTransFacture(models.Model):
@@ -16,6 +18,22 @@ class ZetaTransFacture(models.Model):
     def decimales(self, f):
         if math.fabs(f - 0.0) > 1e-5:
              return f - math.floor(f)
+
+    @api.multi
+    def copy(self, default=None):
+        if (not self.avoir) and (self.state != 'avoir'):
+            self.state = 'avoir'
+            if default is None:
+                default = {}
+            default['avoir'] = True
+            default['facture_o'] = self.name
+            default['state'] = 'avoir'
+            default['n_a_p'] = -(self.n_a_p)
+            default['n_a_p_bis'] = -(self.n_a_p)
+            default['name'] = _('Avoir ') + self.name
+            return super(ZetaTransFacture, self).copy(default)
+        else:
+            raise UserError(_('Cette Facture dispose deja d\'un avoir'))
 
     @api.multi
     def button_paid(self):
@@ -33,8 +51,8 @@ class ZetaTransFacture(models.Model):
         if (vals.get('name') == 'nouveau') and vals.get('code_facture'):
             vals['name'] = vals.get('code_facture') + '-' + self.env['ir.sequence'].next_by_code('zeta.trans.facture')
         client_id = vals.get('client_id')
-        to_pay = vals.get('value') + 10
-        self.env.cr.execute("UPDATE res_partner SET to_pay=%s WHERE id=%s", (to_pay, client_id))
+        to_pay = vals.get('n_a_p_bis') + 10
+        self.env.cr.execute("UPDATE res_partner SET to_pay=((SELECT to_pay FROM res_partner WHERE id=%s) + %s) WHERE id=%s", (client_id ,to_pay, client_id))
         self.env.cr.commit()
         return super(ZetaTransFacture, self).create(vals)
 
@@ -61,6 +79,7 @@ class ZetaTransFacture(models.Model):
                 rem_doc = proforma.rem_doc
                 rem_doc_nom = proforma.rem_doc_nom
                 d_d_u = proforma.d_d_u
+                decl_douane = proforma.str_minute.decl_douane
                 facture = proforma.facture
                 facture_mnt = proforma.facture_mnt
                 stationement = proforma.stationement
@@ -124,6 +143,7 @@ class ZetaTransFacture(models.Model):
                 'colis': colis,
                 'total_ttc': total_ttc,
                 't_v_a': t_v_a,
+                'decl_douane': decl_douane,
                 'b_i_c': b_i_c,
                 'note': note,
                 'forme_j': forme_j,
@@ -145,9 +165,11 @@ class ZetaTransFacture(models.Model):
     def onchange_total_ttc(self):
         self.total_ttc_bis = self.total_ttc
 
-    @api.depends('t_a_f', 'total_debours', 'total_ttc')
+    @api.depends('t_a_f', 'total_debours', 'total_ttc', 'n_a_p_bis')
     def _compute_nap(self):
         self.n_a_p = self.t_a_f + self.total_debours + self.total_ttc
+        if self.n_a_p_bis == - self.n_a_p:
+            self.n_a_p = self.n_a_p_bis
 
     @api.onchange('n_a_p')
     def onchange_nap(self):
@@ -159,7 +181,7 @@ class ZetaTransFacture(models.Model):
         self.res_client = client.res_client
         self.numero_dossier = client.numero_dossier
         self.code_client = client.code_client
-        self.type_operation = client.type_operation
+        self.type_operation = client.str_minute.str_dossier.type_operation
         self.code_facture = client.str_minute.str_dossier.str_bureau.code_facture
         self.nom_client = client.nom_client
         self.rccm = client.rccm
@@ -183,6 +205,7 @@ class ZetaTransFacture(models.Model):
         self.domiciliation_f = client.domiciliation_f
         self.address_cadastrale = client.address_cadastrale
         self.fax = client.fax
+	self.client_id = client.id
 
     @api.depends('d_t_d')
     def _compute_taf(self):
@@ -190,18 +213,35 @@ class ZetaTransFacture(models.Model):
 
     @api.onchange('str_proforma')
     def onchange_things(self):
-        self.value = self.n_a_p
         self.to_pay = self.str_proforma.str_minute.res_client.to_pay
         self.client_id = self.str_proforma.str_minute.res_client.id
 
     test = fields.Char('Test')
 
+    value = fields.Char('Valeur', compute='_compute_code')
+
     name = fields.Char(default='nouveau', required=True, string='Facture', readonly=False, index=True, copy=False)
+
+    facture_o = fields.Char('Facture Origine')
 
     res_client = fields.Many2one('res.partner', 'Client direct')
     str_minute = fields.Many2one('zeta.trans.minute', 'Minute')
     str_proforma = fields.Many2one('zeta.trans.proforma', 'Proforma')
     code_facture = fields.Char('Code Facture')
+    str_bureau = fields.Many2one('zeta.trans.bureau', 'Bureau')
+    avoir = fields.Boolean(default=False)
+    amende = fields.Integer('Amende douane')
+    decl_douane = fields.Selection(
+        [('decl', 'Decl De Douane Unique'), ('laboratoire', 'Laboratoire'), ('phyto', 'Phyto'),
+         ('certif', 'Certif.Vete'), ('autres', 'Autres')], 'Nom DDU')
+    @api.depends('str_bureau')
+    def _compute_code(self):
+        self.value = self.str_bureau.code_journal
+
+    @api.onchange('value')
+    def onchange_value(self):
+        self.code_journal = self.str_bureau.code_journal
+        self.compte_analytique = self.str_bureau.compte_analytique
 
     # INFO CLIENT
     forme_j = fields.Char()
@@ -214,10 +254,12 @@ class ZetaTransFacture(models.Model):
     ifu = fields.Char()
     telephone = fields.Char()
     fax = fields.Char()
+    code_journal = fields.Char('Code Journal')
+    compte_analytique = fields.Char('Compte Analytique')
 
     # HEAD
     designation = fields.Text('Désignation')
-    date_create = fields.Date('Date Création')
+    date_create = fields.Date('Date Création', required=True)
     qte = fields.Integer('Quantité')
     colis = fields.Integer('Colis')
     poids_brut = fields.Integer('Poids Brut')
@@ -269,6 +311,10 @@ class ZetaTransFacture(models.Model):
     rem_doc_nom = fields.Char('Nom Remise Doc')
     d_d_u = fields.Integer('DDU')
     facture = fields.Char('Facture Frontière')
+    frontiere = fields.Selection(
+        [('C0003', 'Niangologo'), ('C0004', 'Sinkence'), ('C0006', 'Dakola'),
+         ('C0007', 'Nadiagou'), ('C0008', 'Fada'), ('C0009','Ouessa'), ('C0010','Faramana'), ('C0011','Koloko'), ('0', 'Autres')],
+         'Frontiere', required=True)
     facture_mnt = fields.Integer('Montant Facture Frontière')
     stationement = fields.Integer('Stationnement')
     t_v_a_d_2 = fields.Integer('TVA', readonly=False)
@@ -323,22 +369,25 @@ class ZetaTransFacture(models.Model):
     n_a_p = fields.Integer(string='NET A PAYER', compute='_compute_nap')
     n_a_p_bis = fields.Integer(string='NET A PAYER')
 
-    value = fields.Integer()
-
     @api.depends('n_a_p')
     def get_amount_letter(self):
-        if self.n_a_p:
-            amount_letter = Number_To_Word.Number_To_Word(self.n_a_p, 'fr', 'FRANCS CFA', '')
+        n_a_p = - self.n_a_p if self.n_a_p < 0 else self.n_a_p
+        if n_a_p > 0:
+            amount_letter = Number_To_Word.Number_To_Word(n_a_p, 'fr', 'FRANCS CFA', '')
             self.amount_total_letter = amount_letter
+
 
     @api.model
     def get_paid(self):
-        to_pay = self.str_proforma.str_minute.res_client.to_pay
-        paid = self.str_proforma.str_minute.res_client.paid
+	if self.str_proforma:
+		client = self.str_proforma.str_minute.res_client
+	else:
+		client = self.res_client
+	to_pay = client.to_pay
+        paid = client.paid
         to_pay = to_pay - self.n_a_p
         paid = paid + self.n_a_p
-        client_id = self.str_proforma.str_minute.res_client.id
-        self.env.cr.execute("UPDATE res_partner SET to_pay=%s, paid=%s WHERE id=%s", (to_pay, paid, client_id))
+        self.env.cr.execute("UPDATE res_partner SET to_pay=%s, paid=%s WHERE id=%s", (to_pay, paid, client.id))
         self.env.cr.commit()
 
     amount_total_letter = fields.Char('Montant total en lettre', required=False, compute='get_amount_letter')

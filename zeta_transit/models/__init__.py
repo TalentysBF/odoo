@@ -10,3 +10,4 @@ from . import zeta_trans_bureau
 from . import zeta_trans_transaction
 from . import zeta_trans_caisse
 from . import zeta_trans_had
+from . import talentys_caisse

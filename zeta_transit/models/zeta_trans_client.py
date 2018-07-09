@@ -37,8 +37,7 @@ class ZetaTransClient(models.Model):
     forme_j = fields.Char('Forme Juridique')
     regime_i = fields.Char('Régime D\'imposition')
     domiciliation_f = fields.Char('Domiciliation Fiscale')
-    fax = fields.Char('Fax')
 
     # SOLDE
-    to_pay = fields.Integer('Debit')
+    to_pay = fields.Integer('Montant')
     paid = fields.Integer('Credit')

@@ -4,6 +4,7 @@ from odoo import api, fields, models
 
 class ZetaTransDossier(models.Model):
     _name = 'zeta.trans.dossier'
+    _inherit = ['ir.needaction_mixin']
 
     @api.depends('str_bureau')
     def _compute_code_dossier(self):
@@ -24,7 +25,7 @@ class ZetaTransDossier(models.Model):
                        readonly=False)
     pre_name = fields.Char()
     test = fields.Char('Test')
-    type_operation = fields.Selection([('export', 'Exportation'), ('import', 'Importation')], 'Type d\'opération')
+    type_operation = fields.Selection([('Exportation', 'Exportation'), ('Importation', 'Importation')], 'Type d\'opération')
     client = fields.Many2one('res.partner', 'Client')
     str_bureau = fields.Many2one('zeta.trans.bureau', 'Bureau')
     code_dossier = fields.Char('Code Dossier', compute='_compute_code_dossier')

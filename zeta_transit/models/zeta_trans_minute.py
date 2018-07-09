@@ -8,6 +8,7 @@ import math
 class ZetaTransMinute(models.Model):
     _name = 'zeta.trans.minute'
     _description = 'Zeta Transit Minute'
+    _inherit = ['ir.needaction_mixin']
 
     @api.model
     def decimales(self, f):
@@ -236,7 +237,7 @@ class ZetaTransMinute(models.Model):
     article_number = fields.Integer('Nombre D\'article(s)')
     str_dossier = fields.Many2one('zeta.trans.dossier', 'Dossier N°.', required=True)
     res_client = fields.Many2one('res.partner', 'Client')
-    date_date = fields.Datetime('Date', default=fields.Datetime.now())
+    date_date = fields.Date('Date', default=fields.Datetime.now())
     res_article_id = fields.One2many('zeta.trans.minute.article', 'minute_id', 'Article', copy=True, store=True)
 
     int_final_dd = fields.Integer(string='Droits de douane')

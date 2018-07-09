@@ -13,7 +13,7 @@
 
     'category': 'Application',
     'version': '0.1',
-    'depends': ['base'],
+    'depends': ['base', 'report'],
 
     'data': [
         'security/zeta_trans.xml',
@@ -29,6 +29,8 @@
         'views/zeta_trans_caisse_kanban.xml',
         'views/zeta_trans_caisse.xml',
         'views/zeta_trans_transaction.xml',
+        'views/talentys_caisse.xml',
+        'data/caisse_sequence.xml',
         'views/zeta_trans_client.xml',
         'views/zeta_trans_had.xml',
         'reports/zeta_trans_minute_report.xml',

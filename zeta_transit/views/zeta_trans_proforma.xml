@@ -147,7 +147,7 @@
 		<field name="name">Proforma Tree</field>
 		<field name="model">zeta.trans.proforma</field>
 		<field name="arch" type="xml">
-			<tree>
+			<tree color="decoration-muted">
 				<field name="name"/>
 				<field name="str_minute"/>
 			</tree>

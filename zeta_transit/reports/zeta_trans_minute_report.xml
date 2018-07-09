@@ -30,6 +30,7 @@
 
                     <t t-if="o.res_article_id" class="row">
                         <t t-set="i" t-value="1"/>
+                        <t t-set="i" t-value="1"/>
                         <t t-foreach="o.res_article_id" t-as="res_article_id">
                         <t t-if="i>1" >
                             <div style="page-break-before: always;"/>

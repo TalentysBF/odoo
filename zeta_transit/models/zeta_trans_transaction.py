@@ -2,7 +2,6 @@
 
 from odoo import api, fields, models
 
-
 class ZetaTransTransaction(models.Model):
     _name = 'zeta.trans.transaction'
 

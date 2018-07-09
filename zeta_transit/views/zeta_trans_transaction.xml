@@ -26,7 +26,7 @@
 		<field name="name">Caisse Tree</field>
 		<field name="model">zeta.trans.transaction</field>
 		<field name="arch" type="xml">
-			<tree>
+			<tree color="decoration-muted">
                 <field name="name"/>
 				<!--<field name="z_caisse"/>-->
                 <field name="name_dossier"/>

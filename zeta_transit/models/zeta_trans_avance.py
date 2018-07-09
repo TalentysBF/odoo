@@ -2,9 +2,9 @@
 
 from odoo import api, fields, models
 
-
 class ZetaTransAvance(models.Model):
 	_name = 'zeta.trans.avance'
+
 
 	@api.depends('str_minute')
 	@api.onchange('str_minute')

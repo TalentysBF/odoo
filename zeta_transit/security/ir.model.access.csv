@@ -8,3 +8,5 @@ access_zeta_trans_dossier_assist,zeta.trans.dossier,model_zeta_trans_dossier,zet
 access_zeta_trans_facture,zeta.trans.facture,model_zeta_trans_facture,zeta_transit.group_zeta_trans_admin,1,1,1,1
 access_zeta_trans_proforma,zeta.trans.proforma,model_zeta_trans_proforma,zeta_transit.group_zeta_trans_admin,1,1,1,1
 access_zeta_trans_bureau,zeta.trans.bureau,model_zeta_trans_bureau,base.group_user,1,1,1,1
+access_talentys_caisse,talentys.caisse,model_talentys_caisse,base.group_user,1,1,1,1
+access_talentys_caisse_line,talentys.caisse.line,model_talentys_caisse_line,base.group_user,1,1,1,1

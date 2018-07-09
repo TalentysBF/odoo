@@ -10,3 +10,5 @@ class ZetaTransBureau(models.Model):
     code_dossier = fields.Char('Code Dossier')
     code_facture = fields.Char('Code Facture')
     code_proforma = fields.Char('Code Proforma')
+    code_journal = fields.Char('Code Journal')
+    compte_analytique = fields.Char('Compte Analytique')

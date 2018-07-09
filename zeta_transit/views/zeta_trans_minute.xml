@@ -265,7 +265,7 @@
 		<field name="name">Minute Tree</field>
 		<field name="model">zeta.trans.minute</field>
 		<field name="arch" type="xml">
-			<tree>
+			<tree color="decoration-muted">
 				<field name="name"/>
 				<field name="res_client"/>
 				<field name="str_dossier"/>

@@ -16,6 +16,7 @@
 								<field name="test" invisible="1"/>
 								<field name="str_bureau"/>
 								<field name="client" domain="[('is_zeta_trans_client', '=' ,True)]"/>
+
 							</group>
 							<group>
 								<field name="type_operation"/>
@@ -80,11 +81,11 @@
         </record>
 
 
-	<record id="zeta_tree_trans_dossier_tree" model="ir.ui.view">
+	<record id="zeta_tree_trans_dossier" model="ir.ui.view">
 		<field name="name">Dossier Tree</field>
 		<field name="model">zeta.trans.dossier</field>
 		<field name="arch" type="xml">
-			<tree>
+			<tree color="decoration-muted">
 				<field name="name"/>
 				<field name="client"/>
 				<field name="type_operation"/>
@@ -94,8 +95,7 @@
 			</tree>
 		</field>
 	</record>
-
-	<record id="zeta_filter_trans_dossier_filter" model="ir.ui.view">
+	<record id="zeta_filter_trans_dossier" model="ir.ui.view">
 		<field name="name">Dossier Filter</field>
 		<field name="model">zeta.trans.dossier</field>
 		<field name="arch" type="xml">

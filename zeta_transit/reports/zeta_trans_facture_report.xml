@@ -9,7 +9,7 @@
                     <div class="oe_structure"/>
                     <div class="row" style="font-size:11px; margin-top: 0.5px;padding-top: 0.5px;font-family: verdana;">
                         <div class="col-xs-5" style="font-size:11px; margin-top: 0.5px;padding-top: 0.5px;">
-                            <strong style="font-size:15px;">Facture: <span style="font-size:12px;" t-field="o.name"/> </strong><br/>
+                            <strong style="font-size:15px;"><t t-if="o.avoir == 0">Facture : </t><t t-if="o.avoir">Avoir : </t><span style="font-size:12px;" t-field="o.name"/> </strong><br/>
                             <strong>Date :  </strong>
                             <span t-field="o.date_create"/><br/>
                             <strong>Code Client :  </strong>
@@ -460,7 +460,7 @@
                 </table>
                 <div class="row" style="font-size:13px; font-family: verdana;">
                       <div class="col-xs-12 pull-bottom">
-                          <strong><i>Arrêté la présente facture à la somme de <span t-field="o.amount_total_letter"/></i></strong>
+                          <strong><i>Arrêté <t t-if="o.avoir == 0">la présente facture</t><t t-if="o.avoir">le présent avoir</t> à la somme de <span t-field="o.amount_total_letter"/></i></strong>
                       </div>
                 </div>
 
