@@ -1,2 +1,2 @@
 # odoo
-Projet ODOO V11 interne
+Projet ODOO V10 interne
