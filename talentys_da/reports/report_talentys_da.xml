@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_da_document">
+    <t t-call="web.html_container">
+    <t t-call="web.external_layout">
+        <t/>
+        <div class="page">
+            <div class="oe_structure"/>
+            <div>
+                <div class="row">
+                    <div class="col-xs-12"><strong>DEMANDE D'ACHAT EXPLOITATION / DECAISSEMENT <span t-field="doc.name"/></strong></div>
+                </div>
+				<div class="row">
+                    <div class="col-xs-12">DATE: <strong><span t-field="doc.date"/></strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2">DEMANDEUR : </div>
+                    <div class="col-xs-4"><strong><span t-field="doc.user_id"/></strong></div>
+                    <div class="col-xs-2">Client : </div>
+                    <div class="col-xs-4"><strong><span t-field="doc.customer_id"/></strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2">FOURNISSEUR : </div>
+                    <div class="col-xs-4"><strong><span t-field="doc.supplier_id"/></strong></div>
+                    <div class="col-xs-2">Ref Devis : </div>
+                    <div class="col-xs-4"><strong><span t-field="doc.sale_order_id"/></strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2">Tel / Fax : </div>
+                    <div class="col-xs-4"><strong><span t-field="doc.supplier_id.phone"/>/<span/></strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Délai de livraison: </div>
+                    <div class="col-xs-3"><strong><span/></strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Condition de règlement: </div>
+                    <div class="col-xs-3"><strong><span/></strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">OBJET: </div>
+                    <div class="col-xs-3"><strong><span t-field="doc.projet"/></strong></div>
+                </div>
+            </div>
+            <div>
+            <table class="sale_line" style="font-size:12px;width:100%;border: 1px solid block;">
+                <thead>
+                    <tr style="background-color:#848484;">
+                        <th class="text-center">Ref</th>
+                        <th class="text-center">Designation</th>
+                        <th class="text-center">Qté</th>
+                        <th class="text-center">Prix Unit.</th>
+                        <th class="text-center">Montant</th>
+                    </tr>
+               </thead>
+                <tbody class="sale_tbody" style="border: 1px solid white;">
+                    <t t-foreach="doc.line_ids" t-as="l">
+                        <tr style="border: 1px solid white;">
+                             <td style="border: 1px solid white;"><span t-field="l.product_id.default_code"/></td>
+                             <td style="border: 1px solid white;"><span t-field="l.product_id.name"/></td>
+                             <td style="border: 1px solid white;" class="text-right"><span t-field="l.requested_qty"/></td>
+                             <td style="border: 1px solid white;" class="text-right"><span t-field="l.price_unit" /></td>
+                             <td style="border: 1px solid white;" class="text-right" groups="sale.group_discount_per_so_line">
+                                     <span t-field="l.discount"/>
+                             </td>
+                             <td class="text-right" groups="sale.group_show_price_subtotal"><span t-field="l.price_subtotal"
+                                     t-options='{"widget": "monetary"}'/>
+                             </td>
+                        </tr>
+                    </t>
+                    <tr style="border: 1px solid black;">
+                        <td colspan="3" style="border-style:none;"></td>
+                        <td colspan="2" class="active" style="background-color:#BDBDBD; text-align:center;">Total HT</td>
+                        <td class="active text-right" style="background-color:#BDBDBD; text-align:center;">
+                            <span t-field="doc.amount_untaxed" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <div class="oe_structure"/>
+        </div>
+    </t>
+    </t>
+    </template>
+
+    <template id="report_talentys_da">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="talentys_da.report_da_document"/>
+            </t>
+    </template>
+
+    <report
+            id="action_report_da"
+            string="DA TALENTYS"
+            model="purchase.purchase.request"
+            report_type="qweb-pdf"
+            file="talentys_da.report_talentys_da"
+            name="talentys_da.report_talentys_da"
+            print_report_name="'DA TALENTYS'"
+        />
+</odoo>

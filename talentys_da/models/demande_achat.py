@@ -46,10 +46,11 @@ class RequestPurchase(models.Model):
     #                          ('done', 'Terminé')], 'Statut', required=True, states={'done': [('readonly', True)]},
     #                         default='draft')
 
-    state = fields.Selection([('draft', 'brouillon'), ('supp', 'Superieur'), ('compta', 'Compta'), ('admin', 'Admin'),
-                              ('reject', 'Reject'), ('done', 'Done')], default='draft')
-    listPrice_id = fields.Many2one('product.pricelist', 'Liste de prix', required=True)
-    date = fields.Date('Date', required=False)
+    state = fields.Selection([('draft', 'brouillon'), ('express', 'Expression de besoin'), ('supp', 'Superieur'), ('compta', 'Compta'), ('admin', 'Admin'),
+                              ('reject', 'Reject'), ('waiting', 'En Attente'), ('done', 'Done')], default='express')
+    listPrice_id = fields.Many2one('product.pricelist', 'Liste de prix')
+    direct_out = fields.Boolean('Decaissement Direct')
+    date = fields.Date('Date', required=False, default=fields.Datetime.now())
     user_id = fields.Many2one('res.users', 'Demandeur', required=True, readonly=True, index=True,
                               track_visibility='onchange', default=lambda self: self.env.user)
     demandeur_id = fields.Many2one('hr.employee', 'Demandeur', compute=_getEmployee)
@@ -77,7 +78,7 @@ class RequestPurchase(models.Model):
                                        help="The payment method used when the expense is paid by the company.")
     accounting_date = fields.Date(string="Date")
     account_move_id = fields.Many2one('account.move', string='Journal Entry', ondelete='restrict', copy=False)
-    notes_finances = fields.Text('Commentaire Finance', required=False)
+    notes_finances = fields.Date('Date prévisionnelle', required=False)
     account_id = fields.Many2one('account.account', 'Compte')
     besoin_id = fields.Many2one('purchase.expression.besoin', 'Expression de besoin')
     line_ids = fields.One2many("purchase.purchase.request.line", 'purchase_request_id', 'Details')
@@ -106,6 +107,10 @@ class RequestPurchase(models.Model):
         self.state = 'supp'
 
     @api.one
+    def action_da(self):
+        self.state = 'draft'
+
+    @api.one
     def action_admin(self):
         self.state = 'admin'
 
@@ -120,7 +125,11 @@ class RequestPurchase(models.Model):
     @api.one
     def action_payment(self):
         self.action_move_create()
-        self.state = 'done'
+        if self.direct_out:
+            self.state = 'done'
+        else:
+            self.state = 'waiting'
+
     @api.one
     def send_notification(self, email_id, context=None):
         template_id = self.env['ir.model.data'].get_object_reference('talentys_custom', email_id)
@@ -276,10 +285,11 @@ class ResquestPurchaseLine(models.Model):
     _name = 'purchase.purchase.request.line'
     _description = "Gestion des lignes de demandes d'achats"
 
-    @api.depends('requested_qty', 'price_unit', 'taxes_id')
+    @api.depends('requested_qty', 'price_unit', 'taxes_id', 'discount')
     def _compute_amount(self):
         for line in self:
-            taxes = line.taxes_id.compute_all(line.price_unit, line.purchase_request_id.currency_id, line.requested_qty,
+            price_unit = line.price_unit - (line.price_unit * (line.discount/100))
+            taxes = line.taxes_id.compute_all(price_unit, line.purchase_request_id.currency_id, line.requested_qty,
                                               product=line.product_id, partner=line.supplier_id)
             line.update({
                 'price_tax': taxes['total_included'] - taxes['total_excluded'],

@@ -14,12 +14,13 @@
                     <button name="action_retour_finance" string="Valider" type="object" states="ret_finance"/>
                     <button name="%(action_payment_cash_form)d" string="Valider" type="action" states="caisse"/>
                     <button name="action_responsable_achat" string="Valider" states="achat" type="object"/>
-                    <button name="action_draft" string="Annuler" type="object"/>-->
-                    <button name="action_admin" string="Soumetre" states="draft" type="object"/>
-                    <button name="action_compta" string="Approuver" states="admin" type="object"/>
-                    <button name="action_reject" string="Rejeter" states="admin" type="object"/>
-                    <button name="action_payment" string="Payer" states="compta" type="object"/>
-                    <button name="%(action_payment_cash_form)d" string="Valider" type="action"/>
+                    <button name="action_draft" string="Annuler" type="object"/>
+                    <button name="%(action_payment_cash_form)d" string="Valider" type="action" groups="talentys_da.group_talentys_da_admin"/>-->
+                    <button name="action_da" string="Soumetre" states="express" type="object"/>
+                    <button name="action_compta" string="Soumetre" states="draft" type="object" groups="talentys_da.group_talentys_da_superieur"/>
+                    <button name="action_payment" string="Approuver" states="admin" type="object" groups="talentys_da.group_talentys_da_admin"/>
+                    <button name="action_reject" string="Rejeter" states="admin,compta" type="object" groups="talentys_da.group_talentys_da_admin,talentys_da.group_talentys_da_compta"/>
+                    <button name="action_admin" string="Approuver" states="compta" type="object" groups="talentys_da.group_talentys_da_compta"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,admin"/>
                 </header>
                 <sheet>
@@ -37,12 +38,14 @@
                         <field name="besoin_id" invisible="1"/>
                         <field name="user_id"/>
                         <field name="supplier_id"/>
+                        <field name="currency_id"/>
                         <field name="notif" invisible="1"/>
-                        <field name="listPrice_id"/>
+                        <field name="listPrice_id" invisible="1"/>
                         <field name="demandeur_id" invisible="1"/>
                     </group>
-                    <group colspan="4" string="Commentaire Finance">
-                        <field name="notes_finances" nolabel="1"/>
+                    <group colspan="4" string="Finance" states="compta">
+                        <field name="direct_out"/>
+                        <field name="notes_finances" context="{'direct_out': False}"/>
                     </group>
                     <notebook>
                         <page string="Details de la demande d'achat" name="details_lines">
@@ -69,6 +72,7 @@
                                             <field name="note"/>
                                             <field name="requested_qty"/>
                                             <field name="supplier_id"/>
+                                            <field name="taxes_id" widget="many2many_tags"/>
                                         </group>
                                         <group>
                                             <field name="department_id"/>
@@ -161,6 +165,7 @@
         <field name="domain">[('state','=','draft')]</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="purchase_purchase_request_tree_view"/>
+        <field name="sequence">1</field>
     </record>
 
     <record model="ir.actions.act_window" id="action_purchase_purchase_request_view_admin">
@@ -199,6 +204,15 @@
         <field name="view_id" ref="purchase_purchase_request_tree_view"/>
     </record>
 
+    <record model="ir.actions.act_window" id="action_purchase_purchase_request_view_attente">
+        <field name="name">Demande d'achat En Attente</field>
+        <field name="res_model">purchase.purchase.request</field>
+        <field name="view_type">form</field>
+        <field name="domain">[('state','=','waiting')]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="purchase_purchase_request_tree_view"/>
+    </record>
+
     <record model="ir.actions.act_window" id="action_purchase_purchase_request_view_accept">
         <field name="name">Demande d'achat Approuver</field>
         <field name="res_model">purchase.purchase.request</field>
@@ -208,38 +222,59 @@
         <field name="view_id" ref="purchase_purchase_request_tree_view"/>
     </record>
 
+    <record model="ir.actions.act_window" id="action_purchase_purchase_request_view_besoin">
+        <field name="name">Expression de besoin</field>
+        <field name="res_model">purchase.purchase.request</field>
+        <field name="view_type">form</field>
+        <field name="domain">[('state','=','express')]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="purchase_purchase_request_tree_view"/>
+        <field name="sequence">1</field>
+    </record>
+<!--
     <record id="action_purchase_request1" model="ir.actions.act_window">
-        <field name="name">Demandes d'achat</field>
+        <field name="name">Expression de besoin</field>
         <field name="res_model">purchase.purchase.request</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field eval="False" name="view_id"/>
     </record>
-
-
+-->
     <menuitem id="purchase_purchase_request_menu_start" name="Demande D'achat"/>
 
     <menuitem id="purchase_purchase_request_menu" name="Demande D'achat" parent="purchase_purchase_request_menu_start"/>
+    <menuitem id="purchase_purchase_request_menu_exp" name="Expression de besoin" parent="purchase_purchase_request_menu_start"/>
     <menuitem id="purchase_purchase_request_menu_conf" name="Admin et compta" parent="purchase_purchase_request_menu_start"/>
 
     <menuitem id="purchase_purchase_request_menu_general" name="Demande D'achat A Soumettre"
         action="action_purchase_purchase_request_view_general"
         parent="purchase_purchase_request_menu"/>
 
+    <menuitem id="purchase_purchase_request_menu_besoin" name="Expression de besoin"
+        action="action_purchase_purchase_request_view_besoin"
+        parent="purchase_purchase_request_menu_exp"/>
+
     <menuitem id="purchase_purchase_request_menu_admin" name="Demande D'achat Administration"
         action="action_purchase_purchase_request_view_admin"
-        parent="purchase_purchase_request_menu_conf" />
+        groups="talentys_da.group_talentys_da_admin"
+        parent="purchase_purchase_request_menu_conf"/>
 
-    <menuitem id="purchase_purchase_request_menu_compta" name="Demande D'achat Validés"
+    <menuitem id="purchase_purchase_request_menu_compta" name="Demande D'achat Comptabilite"
         action="action_purchase_purchase_request_view_compta"
-        parent="purchase_purchase_request_menu_conf" />
-
+        groups="talentys_da.group_talentys_da_admin,talentys_da.group_talentys_da_compta"
+        parent="purchase_purchase_request_menu_conf"/>
+<!--
     <menuitem id="purchase_purchase_request_menu_supp" name="Demande D'achat Superieur"
         action="action_purchase_purchase_request_view_supp"
+        groups="talentys_da.group_talentys_da_superieur,talentys_da.group_talentys_da_admin"
         parent="purchase_purchase_request_menu_conf" />
-
+-->
     <menuitem id="purchase_purchase_request_menu_reject" name="Demande D'achat Rejetés"
         action="action_purchase_purchase_request_view_reject"
+        parent="purchase_purchase_request_menu" />
+
+    <menuitem id="purchase_purchase_request_menu_attente" name="Demande D'achat En Attente"
+        action="action_purchase_purchase_request_view_attente"
         parent="purchase_purchase_request_menu" />
 
     <menuitem id="purchase_purchase_request_menu_accept" name="Demande D'achat Approuvés"
