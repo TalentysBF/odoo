@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+        <record model="ir.actions.act_window" id="rvc_action">
+            <field name="name">Rapport de visite</field>
+            <field name="res_model">talentys.rvc</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- CRV record form and tree -->
+        <record id="RVC" model="ir.ui.view">
+            <field name="name">CRV form</field>
+            <field name="model">talentys.rvc</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <!-- Rapport de visite client -->
+                    <group name="group_top" string="RAPPORT DE VISITE CLIENT" style="text-align:center">
+                    </group>
+
+                    <group string="Infos Commercial Client" name="infos_com_cli">
+                          <field name="name" />
+                          <field name="client"/>
+                          <field name="datej"/>
+                          <field name="lieu"/>
+                  </group>
+
+                 <notebook>
+				<page name="Participant" string="Participant">
+					<field name="participant">
+					<tree>
+						<field name="name"/>
+						<field name="poste"/>
+						<field name="tel"/>
+						<field name="mail"/>
+					</tree>
+					<form>
+						<sheet>
+							<!-- <group>
+								<field name="name" style="text-transform: uppercase;"/>
+							</group>
+							<separator/> -->
+						<group>
+							<group>
+								<field name="name"/>
+								<field name="poste"/>
+							</group>
+							<group>
+								<field name="tel"/>
+								<field name="mail"/>
+							</group>
+						</group>
+						</sheet>
+					</form>
+				</field>
+				</page>
+				</notebook>	
+
+	            <group name="group_top" string="COMPTE RENDU" style="text-align:center">
+	                   		<field name="cr"/>
+	            </group>
+	             <group string="PROCHAINES ACTIONS" name="action_prochaines" style="text-align:center">
+	                    <field name="action"/>
+	                    <!-- Many2many Selectionner plusieurs champs -->
+	                    <field name="acteur" widget="many2many_tags" placeholder="Selectionnez les acteurs..."/>
+	                    <field name="deadline"/>
+	            </group>
+	              
+                </sheet>
+                </form>
+			</field>
+		</record>
+
+		<record id="RVC_tree" model="ir.ui.view">
+			<field name="name">CRV Tree</field>
+			<field name="model">talentys.rvc</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name"/>
+					<field name="client"/>
+					<field name="datej"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="RVC_filter" model="ir.ui.view">
+			<field name="name">CRV Filter</field>
+			<field name="model">talentys.rvc</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="name"/>
+					<field name="client"/>
+					<field name="datej"/>
+				</search>
+			</field>
+		</record>
+
+		<record id="rvc_calendar" model="ir.ui.view">
+            <field name="name">RVC form</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+            <field name="arch" type="xml">
+				<xpath expr="//form/sheet/notebook/page/group/groupq/field[@name='location']" position="after">
+	            	<field name="rvc_calendar"/>
+				</xpath>
+	        </field>
+	    </record>
+
+
+		<menuitem name="RVC" id="rvc_view" />
+		<menuitem name="RVC" id="rvc_views" parent="rvc_view" action="rvc_action"/>
+	</data>
+</odoo>
