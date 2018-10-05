@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record model="ir.sequence" id="seq_talentys_ao">
+            <field name="name">Sequence Talentys AO</field>
+            <field name="code">talentys.ao</field>
+            <field name="prefix">AO.</field>
+            <field name="padding">3</field>
+        </record>
+</odoo>

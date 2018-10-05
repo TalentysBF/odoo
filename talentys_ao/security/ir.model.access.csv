@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_talentys_ao,talentys.ao,model_talentys_ao,base.group_portal,1,1,1,1
+access_talentys_ao_lot,talentys.ao.lot,model_talentys_ao_lot,base.group_portal,1,1,1,1
+access_talentys_ao_lot_materiel,talentys.ao.lot.material,model_talentys_ao_lot_material,base.group_portal,1,1,1,1
+access_talentys_ao_lot_technique,talentys.ao.lot.technique,model_talentys_ao_lot_technique,base.group_portal,1,1,1,1
+access_talentys_ao_lot_admin,talentys.ao.lot.admin,model_talentys_ao_lot_admin,base.group_portal,1,1,1,1

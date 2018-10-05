@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+        <record model="ir.actions.act_window" id="ao_action">
+            <field name="name">Appel d'offre</field>
+            <field name="res_model">talentys.ao</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- AO record form and tree -->
+        <record id="AO" model="ir.ui.view">
+            <field name="name">AO form</field>
+            <field name="model">talentys.ao</field>
+            <field name="arch" type="xml">
+                <form>
+					<header>
+						<button string="Consulter" name="consult" states="draft" type="object"/>
+						<button string="Rejeter" name="reject" states="spread" type="object"/>
+						<button string="Diffuser" name="spread" states="consulted" type="object"/>
+						<button string="Validation Générale" name="validate" states="spread" type="object"/>
+						<button string="Validation Administrative" name="validate_a" states="validated" type="object"/>
+						<button string="Validation Technique" name="validate_t" states="validated_a" type="object"/>
+						<button string="Deposer" name="validate_f" states="validated_t" type="object"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,consulted,spread,validated,
+								validated_a,validated_t,validated_f"/>
+                	</header>
+                    <sheet>
+						<!-- Appel d'offre -->
+                    <group name="group_top" string="Appel d'Offre" style="text-align:center">
+                    	<field name="name" nolabel="1" readonly="1"/>
+                    </group>
+                    <group>
+                    	<group>
+                          <field name="nom" />
+                          <field name="client"/>
+                      	</group>
+                      	<group>
+                          <field name="datec"/>
+                          <field name="dated"/>
+                      	</group>
+                      	<group>
+                      		<field name="comment"/>
+                      	</group>
+						<group>
+                      		<field name="ao_file"/>
+                      		<field name="price"/>
+                      		<field name="cr"/>
+                      	</group>
+                 </group>
+                <notebook>
+				<page name="Lot" string="Lots">
+					<field name="lot">
+					<tree>
+						<field name="name"/>
+						<field name="descrip"/>
+						<field name="amount"/>
+						<field name="prix"/>
+						<field name="val_final"/>
+					</tree>
+					<form>
+						<sheet>
+						<group>
+							<group>
+								<field name="val_final" invisible="1"/>
+								<field name="name"/>
+								<field name="descrip"/>
+							</group>
+							<group>
+								<field name="prix"/>
+								<field name="amount"/>
+							</group>
+							<group>
+								<field name="divers"/>
+							</group>
+							<group>
+								<field name="val_admin"/>
+								<field name="val_tech"/>
+								<field name="fichier"/>
+							</group>
+						</group>
+						<notebook>
+							<page name="Exigences" string="Exigences Matérielles">
+								<field name="id_materiel">
+								<tree>
+									<field name="des_m"/>
+									<field name="nb"/>
+								</tree>
+								<form>
+								<sheet>
+									<group>
+										<group>
+											<field name="des_m"/>
+										</group>
+										<group>
+											<field name="nb"/>
+										</group>
+									</group>
+								</sheet>
+								</form>
+								</field>
+							</page>
+							<page name="exigence" string="Exigences Techniques">
+								<field name="id_technique">
+								<tree>
+									<field name="pos"/>
+									<field name="qualif"/>
+									<field name="expg"/>
+									<field name="exppos"/>
+								</tree>
+								<form>
+								<sheet>
+									<group>
+										<group>
+											<field name="pos"/>
+											<field name="qualif"/>
+										</group>
+										<group>
+											<field name="expg"/>
+											<field name="exppos"/>		
+										</group>
+									</group>
+								</sheet>
+								</form>
+								</field>
+							</page>
+							<page name="exigences" string="Exigences Administratives ">
+								<field name="id_admin">
+								<tree>
+										<field name="des_adm"/>
+								</tree>
+								<form>
+								<sheet>
+									<group>
+											<field name="des_adm"/>
+									</group>
+								</sheet>
+								</form>
+								</field>
+							</page>
+						</notebook>
+						</sheet>
+					</form>
+				</field>
+				</page>
+				</notebook>	
+                </sheet>
+                </form>
+			</field>
+		</record>
+
+		<record id="ao_tree" model="ir.ui.view">
+			<field name="name">ao Tree</field>
+			<field name="model">talentys.ao</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="nom"/>
+					<field name="client"/>
+					<field name="datec"/>
+					<field name="dated"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+	    <record model="ir.actions.act_window" id="action_ao_draft">
+			<field name="name">Nouveaux</field>
+			<field name="res_model">talentys.ao</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('state','=','draft')]</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="ao_tree"/>
+		</record>
+
+	    <record model="ir.actions.act_window" id="action_ao_consulted">
+			<field name="name">Consulté</field>
+			<field name="res_model">talentys.ao</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('state','=','consulted')]</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="ao_tree"/>
+		</record>
+
+	    <record model="ir.actions.act_window" id="action_ao_spread">
+			<field name="name">Diffuse</field>
+			<field name="res_model">talentys.ao</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('state','=','spread')]</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="ao_tree"/>
+		</record>
+
+	    <record model="ir.actions.act_window" id="action_ao_validated">
+			<field name="name">Approuve</field>
+			<field name="res_model">talentys.ao</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('state','=','validated')]</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="ao_tree"/>
+		</record>
+
+	    <record model="ir.actions.act_window" id="action_ao_validated_a">
+			<field name="name">Accord Administratif</field>
+			<field name="res_model">talentys.ao</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('state','=','validated_a')]</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="ao_tree"/>
+		</record>
+
+	    <record model="ir.actions.act_window" id="action_ao_validated_t">
+			<field name="name">Accord Technique</field>
+			<field name="res_model">talentys.ao</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('state','=','validated_t')]</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="ao_tree"/>
+		</record>
+
+	    <record model="ir.actions.act_window" id="action_ao_validated_f">
+			<field name="name">AO Finalier</field>
+			<field name="res_model">talentys.ao</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('state','=','validated_f')]</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="ao_tree"/>
+		</record>
+
+	    <record model="ir.actions.act_window" id="action_ao_done">
+			<field name="name">AO Depose</field>
+			<field name="res_model">talentys.ao</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('state','=','done')]</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="ao_tree"/>
+		</record>
+
+	    <record model="ir.actions.act_window" id="action_ao_rejected">
+			<field name="name">AO Rejete</field>
+			<field name="res_model">talentys.ao</field>
+			<field name="view_type">form</field>
+			<field name="domain">[('state','=','reject')]</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="ao_tree"/>
+		</record>
+		
+		<record id="ao_filter" model="ir.ui.view">
+			<field name="name">AO Filter</field>
+			<field name="model">talentys.ao</field>
+			<field name="arch" type="xml">
+				<search>
+					<field name="nom"/>
+					<field name="client"/>
+					<field name="datec"/>
+					<field name="dated"/>
+					<field name="state"/>
+				</search>
+			</field>
+		</record>
+
+		<menuitem name="AO" id="ao_v"/>
+		<menuitem name="PROCESS AO" id="ao_view" parent="ao_v"/>
+		<menuitem name="AO Nouveaux" id="ao_views_draft" parent="ao_view" action="action_ao_draft"/>
+		<menuitem name="AO Consulte" id="ao_views_consulted" parent="ao_view" action="action_ao_consulted"/>
+		<menuitem name="AO Diffuse" id="ao_views_spread" parent="ao_view" action="action_ao_spread"/>
+		<menuitem name="AO Approuver" id="ao_views_validated" parent="ao_view" action="action_ao_validated"/>
+		<menuitem name="AO Administration" id="ao_views_validated_a" parent="ao_view" action="action_ao_validated_a"/>
+		<menuitem name="AO Technique" id="ao_views_validated_t" parent="ao_view" action="action_ao_validated_t"/>
+		<menuitem name="AO Valide" id="ao_views_validated_f" parent="ao_view" action="action_ao_validated_f"/>
+		<menuitem name="AO Depose" id="ao_views_done" parent="ao_view" action="action_ao_done"/>
+		<menuitem name="AO Rejete" id="ao_views_rejected" parent="ao_view" action="action_ao_rejected"/>
+	  	<menuitem name="TOUT" id="ao_view_all" parent="ao_v"/>
+	    <menuitem name="AO" id="ao_views_al" parent="ao_view_all" action="ao_action"/>
+
+	</data>
+</odoo>
