@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="ActionpadWidget">
+        <t t-jquery=".button" t-operation="append">
+            <t t-if="widget.pos.get_client()">
+                <div class="wallet">[ Wallet ] <t class="" t-esc="widget.format_currency(widget.pos.get_wallet())" /></div>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="ClientDetails">
+        <t t-jquery=".client-details-right" t-operation="append">
+             <div class='client-detail'>
+                <span class='label'>[ Wallet ]</span>
+                <span class='detail'><t t-esc='widget.format_currency(partner.wallet)'/></span>
+            </div>
+        </t>
+    </t>
+
+</templates>

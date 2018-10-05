@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <template id="pos_wallet_card_assets" name="pos_wallet_card assets" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/pos_wallet_card/static/src/css/pos_wallet_card.css" />
+                <script type="text/javascript" src="/pos_wallet_card/static/src/js/pos_wallet_card.js"></script>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>
